@@ -20,6 +20,8 @@ def legal_moves(state: GameState) -> tuple[LegalMove, ...]:
         LegalMove("gather", reason="Gain one resource."),
         LegalMove("pass", reason="End the turn."),
     ]
+    if state.draw_pile and len(player.hand) < 3:
+        moves.append(LegalMove("draw", reason="Draw one card (hand limit: three)."))
     if player.resources >= 3:
         moves.append(LegalMove("convert", reason="Spend three resources for two progress."))
     for card in player.hand:

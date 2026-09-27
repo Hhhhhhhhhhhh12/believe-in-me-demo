@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from typing import Literal
 
-ActionType = Literal["gather", "play_card", "convert", "pass"]
+ActionType = Literal["gather", "draw", "play_card", "convert", "pass"]
 
 
 def require_integer(name: str, value: int, *, minimum: int | None = None) -> None:

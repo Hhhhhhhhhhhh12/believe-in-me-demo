@@ -9,11 +9,11 @@ from believe_engine.state import replace_player
 class LegalMoveTests(unittest.TestCase):
     def test_actions_match_available_resources(self):
         state = create_game()
-        self.assertEqual({move.action for move in legal_moves(state)}, {"gather", "pass"})
+        self.assertEqual({move.action for move in legal_moves(state)}, {"gather", "draw", "pass"})
         state = replace_player(state, replace(state.active_player, resources=3))
         self.assertEqual(
             {move.action for move in legal_moves(state)},
-            {"gather", "pass", "convert", "play_card"},
+            {"gather", "draw", "pass", "convert", "play_card"},
         )
 
     def test_move_reason_does_not_affect_legality(self):
@@ -49,6 +49,23 @@ class LegalMoveTests(unittest.TestCase):
         state = replace_player(state, replace(state.active_player, resources=3))
         result = apply_move(state, LegalMove("convert"))
         self.assertEqual((result.players[0].resources, result.players[0].progress), (0, 2))
+
+    def test_draw_moves_one_card_from_pile_to_hand(self):
+        state = create_game()
+        card = state.draw_pile[0]
+        result = apply_move(state, LegalMove("draw"))
+        self.assertEqual(result.players[0].hand[-1], card)
+        self.assertEqual(result.draw_pile, state.draw_pile[1:])
+        self.assertEqual(len(state.players[0].hand), 1)
+        self.assertEqual(result.events[0].event_type, "card_drawn")
+
+    def test_draw_unavailable_at_hand_limit_or_empty_pile(self):
+        state = create_game()
+        player = replace(state.active_player, hand=state.draw_pile[:3])
+        full_hand = replace_player(state, player)
+        self.assertNotIn("draw", {move.action for move in legal_moves(full_hand)})
+        empty_pile = replace(state, draw_pile=())
+        self.assertNotIn("draw", {move.action for move in legal_moves(empty_pile)})
 
     def test_pass_advances_round_without_changing_players(self):
         state = create_game(player_count=2)

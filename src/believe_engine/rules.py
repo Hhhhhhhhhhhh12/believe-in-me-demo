@@ -43,6 +43,11 @@ def apply_move(state: GameState, move: LegalMove) -> GameState:
     if move.action == "gather":
         updated = replace(player, resources=player.resources + 1)
         next_state = _append_event(replace_player(state, updated), "resource_gained", amount=1)
+    elif move.action == "draw":
+        card = state.draw_pile[0]
+        updated = replace(player, hand=(*player.hand, card))
+        drawn = replace(replace_player(state, updated), draw_pile=state.draw_pile[1:])
+        next_state = _append_event(drawn, "card_drawn", card_id=card.card_id, card_name=card.name)
     elif move.action == "convert":
         updated = replace(player, resources=player.resources - 3, progress=player.progress + 2)
         next_state = _append_event(

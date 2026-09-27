@@ -52,6 +52,9 @@ def choose_demo_move(state: GameState) -> LegalMove:
         return conversions[0]
     if playable:
         return max(playable, key=lambda move: cards[move.card_id].progress)
+    draws = [move for move in moves if move.action == "draw"]
+    if draws and not state.active_player.hand:
+        return draws[0]
     if conversions:
         return conversions[0]
     return next(move for move in moves if move.action == "gather")

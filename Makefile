@@ -1,7 +1,7 @@
 PYTHON ?= python3
 export PYTHONPATH := src
 
-.PHONY: demo trace test verify
+.PHONY: demo trace test test-web verify
 
 demo:
 	$(PYTHON) -m believe_engine --seed 7
@@ -12,4 +12,7 @@ trace:
 test:
 	$(PYTHON) -m unittest discover -s tests -v
 
-verify: test
+test-web:
+	node --test tests/web_engine.test.mjs
+
+verify: test test-web

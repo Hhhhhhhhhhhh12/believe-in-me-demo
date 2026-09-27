@@ -3,6 +3,10 @@
 A small Python engine for a turn-based resource game. Players gather resources,
 play cards, and convert resources into progress. The first to reach 10 progress wins.
 
+**[Play in your browser](https://hhhhhhhhhhhh12.github.io/believe-in-me-demo/)**
+against two computer players. No download or account is required. The page runs
+locally in your browser and does not send game data to a server.
+
 ## Run
 
 Requires Python 3.11 or newer. The engine and tests use only the standard library.
@@ -19,17 +23,18 @@ JSON event log. Neither command writes files or contacts external services.
 ## Game
 
 Two to eight players start with one resource and one card each. The seed controls
-the initial deck shuffle; undealt cards stay out of play. Each turn allows one action:
+the initial deck shuffle. Each turn allows one action:
 
 | Action | Effect |
 | --- | --- |
 | Gather | Gain one resource. |
+| Draw | Take one card from the deck, up to a hand of three. |
 | Play card | Pay its cost, gain its progress, and discard it. |
 | Convert | Spend three resources to gain two progress. |
 | Pass | End the turn without spending resources. |
 
 The runner uses a simple greedy policy: take an immediate win, otherwise play
-the highest-progress affordable card, convert, or gather. It stops at a winner
+the highest-progress affordable card, draw when empty-handed, convert, or gather. It stops at a winner
 or a configurable turn limit. A limit is reported as `turn_limit`, not a draw.
 
 ```sh
@@ -57,6 +62,10 @@ It is an event log, not a save-game format.
 Identical inputs reproduce the same trace with the same engine and Python version.
 Randomness is local to each run. Cross-version trace compatibility is not promised.
 
+The browser game in `docs/` implements the same small set of actions in JavaScript
+so GitHub Pages can run it without a Python server. Its seeded shuffle is separate
+from Python's, so the same seed need not produce the same card order across them.
+
 ## Tests
 
 ```sh
@@ -65,6 +74,12 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 
 `make test` is equivalent. Tests cover action legality, state isolation, victory,
 turn limits, reproducibility, trace exports, and aggregate results.
+
+Browser rules can be checked with Node.js 20 or newer:
+
+```sh
+make test-web
+```
 
 ## License
 
