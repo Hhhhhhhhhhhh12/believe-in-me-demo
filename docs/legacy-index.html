@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f6">
+    <meta name="description" content="Play a small turn-based resource match from Believe in Me Demo.">
+    <title>Believe in Me Demo</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">B</span>
+          <span><strong>Believe in Me</strong><small>Resource match</small></span>
+        </div>
+        <form id="new-game" class="new-game">
+          <label for="seed">Seed</label>
+          <input id="seed" type="number" inputmode="numeric" min="0" max="4294967295" step="1" value="7" required>
+          <button type="submit">New match</button>
+        </form>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="arena" aria-label="Game board">
+        <div class="board-heading">
+          <div>
+            <span class="eyebrow">Three-player match</span>
+            <h1>First to 10 progress</h1>
+          </div>
+          <div class="round-chip">Round <strong id="round-number">1</strong></div>
+        </div>
+
+        <div class="opponents" id="opponents" aria-label="Opponents"></div>
+
+        <section class="your-seat" aria-labelledby="your-title">
+          <div class="seat-heading">
+            <div>
+              <span class="eyebrow">Player one</span>
+              <h2 id="your-title">Your seat</h2>
+            </div>
+            <span id="turn-status" class="turn-status" role="status" aria-live="polite">Your turn</span>
+          </div>
+          <div class="your-stats">
+            <div class="stat resource-stat"><span>Resources</span><strong id="your-resources">1</strong></div>
+            <div class="stat progress-stat"><span>Progress</span><strong><span id="your-progress">0</span><small> / 10</small></strong></div>
+            <div class="stat"><span>Deck</span><strong id="deck-count">5</strong></div>
+          </div>
+          <progress id="your-progress-bar" max="10" value="0" aria-label="Your progress toward 10"></progress>
+        </section>
+
+        <section class="hand-section" aria-labelledby="hand-title">
+          <div class="section-heading"><h2 id="hand-title">Your hand</h2><span id="hand-count"></span></div>
+          <div id="hand" class="hand"></div>
+        </section>
+
+        <section class="action-section" aria-labelledby="action-title">
+          <h2 id="action-title">Choose one action</h2>
+          <div class="actions">
+            <button type="button" data-move="gather"><span class="action-symbol" aria-hidden="true">+</span><span><strong>Gather</strong><small>+1 resource</small></span></button>
+            <button type="button" data-move="draw"><span class="action-symbol" aria-hidden="true">▤</span><span><strong>Draw</strong><small>+1 card</small></span></button>
+            <button type="button" data-move="convert"><span class="action-symbol" aria-hidden="true">↗</span><span><strong>Convert</strong><small>3 resources → 2 progress</small></span></button>
+            <button type="button" data-move="pass"><span class="action-symbol" aria-hidden="true">→</span><span><strong>Pass</strong><small>End turn</small></span></button>
+          </div>
+        </section>
+      </section>
+
+      <aside class="side-panel" aria-label="Match details">
+        <div id="result" class="result" hidden role="status" aria-live="polite"></div>
+        <div class="rules">
+          <h2>Match rules</h2>
+          <p>Play a card by paying its resource cost. Gather or draw to prepare your next turn. Convert three resources into two progress.</p>
+          <p>Each turn allows one action. The first player to reach 10 progress wins.</p>
+        </div>
+        <section class="activity" aria-labelledby="activity-title">
+          <div class="section-heading"><h2 id="activity-title">Recent turns</h2><span id="turn-count">0 turns</span></div>
+          <ol id="events" aria-live="polite" aria-relevant="additions"></ol>
+        </section>
+        <a class="source-link" href="https://github.com/Hhhhhhhhhhhh12/believe-in-me-demo">View source on GitHub ↗</a>
+      </aside>
+    </main>
+  </body>
+</html>

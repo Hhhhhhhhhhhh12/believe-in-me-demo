@@ -5,3 +5,7 @@ All rights reserved.
 No license is granted to copy, modify, distribute, sublicense, sell, or otherwise
 reuse the software, documentation, or other repository contents without prior
 written permission from the copyright holder.
+
+Third-party components are excluded from this restriction and retain their
+respective licenses. See docs/THIRD_PARTY_NOTICES.md, docs/licenses/,
+docs/vendor/pyodide/LICENSE and docs/LUCIDE-LICENSE.txt.

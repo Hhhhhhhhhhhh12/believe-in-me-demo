@@ -1,11 +1,32 @@
 # Believe in Me Demo
 
-A small Python engine for a turn-based resource game. Players gather resources,
-play cards, and convert resources into progress. The first to reach 10 progress wins.
-
 **[Play in your browser](https://hhhhhhhhhhhh12.github.io/believe-in-me-demo/)**
-against two computer players. No download or account is required. The page runs
-locally in your browser and does not send game data to a server.
+
+Play a prepared mini-match of Believe in Me with the original card artwork and
+the Python rules engine running locally in a Pyodide Web Worker. New matches
+start with six believers. Opponent steps wait for Continue, so results remain
+available to read. No account, Python server or installation is required.
+
+Display settings and local progress stay in your browser. There is no password
+protection; opponent hands are concealed by the interface, not against developer
+tools. Keyboard controls, readable card effects, larger text, contrast and
+reduced-motion options are included. VoiceOver and physical-phone review remain
+in progress; this is not an accessibility certification.
+
+- [About Accessibility](https://hhhhhhhhhhhh12.github.io/believe-in-me-demo/accessibility.html?lang=en)
+- [Under the surface](https://hhhhhhhhhhhh12.github.io/believe-in-me-demo/under-the-surface.html?lang=en)
+- [Readable rules-engine sources](docs/source/)
+- [Third-party notices and source references](docs/THIRD_PARTY_NOTICES.md)
+- [Earlier resource-game browser demo](https://hhhhhhhhhhhh12.github.io/believe-in-me-demo/legacy-index.html)
+
+The static site is in `docs/`; `docs/EXPORT-MANIFEST.json` records its exported
+file hashes. Only selected demo cards, artwork and runtime modules are included.
+The private development repository and its history are not part of this export.
+
+## Earlier Resource-Engine Example
+
+The original small resource-game engine and its tests are preserved below.
+It is a separate earlier example, not the rules for the new BiM mini-match.
 
 ## Run
 
@@ -62,7 +83,7 @@ It is an event log, not a save-game format.
 Identical inputs reproduce the same trace with the same engine and Python version.
 Randomness is local to each run. Cross-version trace compatibility is not promised.
 
-The browser game in `docs/` implements the same small set of actions in JavaScript
+The earlier browser game at `docs/legacy-index.html` implements that small set of actions in JavaScript
 so GitHub Pages can run it without a Python server. Its seeded shuffle is separate
 from Python's, so the same seed need not produce the same card order across them.
 

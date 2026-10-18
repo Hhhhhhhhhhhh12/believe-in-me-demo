@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "status": "demo",
+  "startingBelievers": 6,
+  "originalArtworkAndEngineApproved": true,
+  "publicationApproved": true,
+  "runtimeNotices": "versioned-upstream-collected",
+  "voiceOverReviewComplete": false
+}

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Believe in Me</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./browser-bridge.js" defer></script>
+  <script src="./i18n.js" defer></script>
+  <script src="./mini.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <!-- Original front-board die-cut paths. The inner stroke removes the printed cutline. -->
+  <svg class="board-cutlines" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <mask id="playerboard-cutline" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox" x="0" y="0" width="1" height="1" style="mask-type:luminance">
+        <path fill="white" stroke="black" stroke-width="0.003" d="M 0.702289 0.019484 C 0.696787 0.019484 0.692280 0.015256 0.691823 0.009873 L 0.606205 0.009874 C 0.605959 0.009874 0.605762 0.010058 0.605731 0.010301 C 0.605078 0.015479 0.600665 0.019484 0.595311 0.019484 L 0.396054 0.019484 C 0.390700 0.019484 0.386288 0.015479 0.385634 0.010302 C 0.385603 0.010058 0.385404 0.009874 0.385160 0.009874 L 0.364529 0.009874 C 0.364285 0.009874 0.364086 0.010058 0.364055 0.010302 C 0.363403 0.015479 0.358989 0.019484 0.353635 0.019484 L 0.154379 0.019484 C 0.149025 0.019484 0.144611 0.015479 0.143959 0.010302 C 0.143928 0.010058 0.143730 0.009874 0.143485 0.009874 L 0.092302 0.009873 C 0.090374 0.009873 0.088811 0.011437 0.088811 0.013365 L 0.088811 0.128560 C 0.088811 0.128560 0.087873 0.169715 0.052192 0.190160 C 0.052020 0.190259 0.052058 0.190468 0.052113 0.190514 C 0.101717 0.231697 0.069189 0.312325 0.066469 0.318798 C 0.066371 0.319030 0.066493 0.319287 0.066729 0.319377 C 0.101486 0.332517 0.076744 0.368444 0.074267 0.371892 C 0.074150 0.372054 0.074167 0.372270 0.074295 0.372424 C 0.089727 0.390949 0.075788 0.404734 0.074213 0.406190 C 0.074123 0.406274 0.074008 0.406317 0.073884 0.406317 L 0.013376 0.406317 C 0.011442 0.406317 0.009873 0.407885 0.009873 0.409820 L 0.009873 0.440076 C 0.009873 0.440322 0.010059 0.440520 0.010303 0.440550 C 0.015511 0.441177 0.019547 0.445601 0.019547 0.450977 L 0.019547 0.650232 L 0.019547 0.650234 L 0.019547 0.770529 L 0.019547 0.770530 L 0.019547 0.890825 C 0.019547 0.896200 0.015511 0.900625 0.010303 0.901252 C 0.010059 0.901280 0.009873 0.901479 0.009873 0.901725 L 0.009873 0.973900 C 0.009873 0.975838 0.011444 0.977410 0.013382 0.977410 L 0.311501 0.977410 C 0.317575 0.977410 0.322499 0.982334 0.322499 0.988407 L 0.322499 0.988407 C 0.322499 0.988676 0.322717 0.988893 0.322986 0.988893 L 0.345668 0.988893 C 0.345940 0.988893 0.346154 0.988668 0.346154 0.988395 C 0.346161 0.982326 0.351083 0.977410 0.357153 0.977410 L 0.642848 0.977410 C 0.648922 0.977410 0.653846 0.982334 0.653846 0.988407 L 0.653846 0.988407 C 0.653846 0.988676 0.654064 0.988893 0.654332 0.988893 L 0.677015 0.988893 C 0.677287 0.988893 0.677501 0.988668 0.677501 0.988395 C 0.677508 0.982326 0.682430 0.977410 0.688498 0.977410 L 0.985404 0.977410 C 0.987331 0.977410 0.988893 0.975847 0.988893 0.973919 L 0.988893 0.901223 C 0.988893 0.900968 0.988692 0.900766 0.988438 0.900747 C 0.982976 0.900370 0.978660 0.895829 0.978660 0.890272 L 0.978660 0.603604 C 0.978660 0.598045 0.982976 0.593505 0.988438 0.593127 C 0.988692 0.593110 0.988893 0.592908 0.988893 0.592653 L 0.988893 0.576816 C 0.988893 0.576561 0.988692 0.576358 0.988438 0.576341 C 0.982976 0.575962 0.978660 0.571422 0.978660 0.565865 L 0.978660 0.279196 C 0.978660 0.273638 0.982976 0.269098 0.988438 0.268720 C 0.988694 0.268703 0.988893 0.268501 0.988893 0.268245 L 0.988893 0.117408 L 0.988893 0.022996 C 0.988893 0.021057 0.987321 0.019484 0.985382 0.019484 L 0.702289 0.019484 Z"/>
+      </mask>
+      <mask id="relic-ash-cutline" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox" x="0" y="0" width="1" height="1" style="mask-type:luminance">
+        <rect x="0.006" y="0.005" width="0.988" height="0.96" rx="0.035" ry="0.024" fill="white"/>
+      </mask>
+      <mask id="middleboard-cutline" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox" x="0" y="0" width="1" height="1" style="mask-type:luminance">
+        <path fill="white" stroke="black" stroke-width="0.003" d="M 0.975563 0.023808 L 0.649915 0.023808 C 0.649337 0.041066 0.643158 0.054774 0.635671 0.054774 L 0.366976 0.054774 C 0.359489 0.054774 0.353310 0.041066 0.352731 0.023808 L 0.334402 0.023808 C 0.333824 0.041066 0.327645 0.054774 0.320158 0.054774 L 0.051464 0.054774 C 0.043975 0.054774 0.037797 0.041066 0.037219 0.023808 L 0.024437 0.023808 C 0.016571 0.023808 0.010135 0.038927 0.010135 0.057406 L 0.010135 0.942591 C 0.010135 0.961072 0.016571 0.976189 0.024437 0.976189 L 0.350019 0.976189 C 0.350701 0.959177 0.356839 0.945743 0.364252 0.945743 L 0.632946 0.945743 C 0.640359 0.945743 0.646497 0.959177 0.647179 0.976189 L 0.665532 0.976189 C 0.666215 0.959177 0.672353 0.945743 0.679766 0.945743 L 0.948460 0.945743 C 0.955873 0.945743 0.962009 0.959177 0.962692 0.976189 L 0.975563 0.976189 C 0.983429 0.976189 0.989865 0.961072 0.989865 0.942591 L 0.989865 0.057406 C 0.989865 0.038927 0.983429 0.023808 0.975563 0.023808 Z"/>
+      </mask>
+    </defs>
+  </svg>
+  <a class="skip-link" href="#app" data-copy="skip">Skip to the game</a>
+  <header class="topbar">
+    <a class="wordmark" href="./index.html" aria-label="Believe in Me"><img src="./art/logo.png" alt="Believe in Me! (please)" width="1717" height="916"></a>
+    <nav aria-label="Session" data-copy-label="session">
+      <label class="language-control"><span class="visually-hidden" data-copy="language">Language</span><select id="header-language" data-language><option value="en" lang="en">English</option><option value="de" lang="de">Deutsch</option></select></label>
+      <a class="tech-control" href="./under-the-surface.html" data-tech><img class="nav-tech-art" src="./art/monument.png" alt="" aria-hidden="true"><span data-copy="tech">Under the surface</span></a>
+      <button type="button" class="accessibility-control" data-access-settings aria-haspopup="dialog" aria-controls="accessibility-dialog" aria-expanded="false" title="Accessibility"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg><span data-copy="accessibility">Accessibility</span></button>
+      <button type="button" id="restart" title="Restart" data-copy-label="restart"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.7 6.4"/><path d="M3 3v8h8"/></svg><span data-copy="restart">Restart</span></button><button type="button" id="logout" data-copy-label="logout"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span data-copy="logout">Sign out</span></button>
+    </nav>
+  </header>
+  <div id="error" class="error-banner" role="alert" hidden></div>
+  <p id="announcements" class="visually-hidden" role="status" aria-atomic="true"></p>
+  <main id="app" tabindex="-1" aria-busy="true"><section class="intro" role="status"><img class="intro-logo" src="./art/logo.png" alt="Believe in Me, please"><p data-copy="loading">Preparing the Heavenly Realm.</p></section></main>
+  <dialog id="art-dialog" aria-labelledby="art-title"><button type="button" class="dialog-close" aria-label="Close" data-copy-label="close">×</button><div id="art-detail"></div></dialog>
+  <dialog id="accessibility-dialog" aria-labelledby="access-settings-title">
+    <header class="accessibility-heading"><h2 id="access-settings-title" tabindex="-1" data-copy="accessibility">Accessibility</h2><button type="button" class="dialog-close" aria-label="Close" data-copy-label="close">×</button></header>
+    <div class="accessibility-settings">
+      <fieldset class="accessibility-setting"><legend data-copy="textSize"></legend><div class="text-size-options">
+        <label><input type="radio" name="settings-text-size" value="normal" data-access-pref="textSize" checked><span data-copy="normalText"></span></label>
+        <label><input type="radio" name="settings-text-size" value="larger" data-access-pref="textSize"><span data-copy="largerText"></span></label>
+      </div></fieldset>
+      <div class="accessibility-setting"><label class="accessibility-toggle"><input type="checkbox" data-access-pref="clearCards"><span data-copy="clearCards"></span></label></div>
+      <div class="accessibility-setting"><label class="accessibility-toggle"><input type="checkbox" data-access-pref="highContrast"><span data-copy="highContrast"></span></label></div>
+      <div class="accessibility-setting"><label class="accessibility-toggle"><input type="checkbox" data-access-pref="commandKeys" checked><span data-copy="bidPassKeys"></span></label></div>
+      <div class="accessibility-setting motion-preferences"><label class="accessibility-toggle"><input type="checkbox" data-access-pref="motion" aria-describedby="settings-motion-status"><span data-copy="reduce"></span></label><p id="settings-motion-status"></p><button type="button" class="back" data-motion-system data-copy="followSystem"></button></div>
+    </div>
+    <footer class="accessibility-footer"><a class="back" href="./accessibility.html" data-accessibility data-copy="aboutAccessibility">About Accessibility</a><button type="button" class="back" data-reset-accessibility data-copy="resetDisplay"></button><p id="settings-status" role="status" aria-atomic="true"></p></footer>
+  </dialog>
+  <script id="project-stats" type="application/json">{"snapshot":"49179597424780eee9bdc21d95054a812fe75851","date":"2026-10-10","sourceLines":134790,"sourceFiles":110,"testFunctions":1776,"testFiles":90,"decisions":102}</script>
+  <script id="development-stats" type="application/json">{"date":"2026-10-12","revision":"3abce8576029e8048cbfea5605bc30d8db449bc2","prompts":4650,"chats":250,"commits":2931,"decisions":110,"activeDecisions":102,"from":"2026-02-22","to":"2026-10-12","months":[["2026-02",1,1],["2026-03",null,32],["2026-04",null,5],["2026-05",45,24],["2026-06",655,92],["2026-07",363,136],["2026-08",632,396],["2026-09",1625,1193],["2026-10",1329,1052]]}</script>
+  <template id="tech-content">
+  <section id="tech-page" class="tech-page" aria-labelledby="tech-title">
+    <div class="tech-topline"><p class="tech-eyebrow" data-copy="techEyebrow"></p><a class="back tech-return" href="./index.html" data-copy="returnRealm"></a></div>
+    <header class="tech-heading">
+      <div class="tech-intro"><h1 id="tech-title" tabindex="-1" data-copy="tech">Under the surface</h1><p data-copy="architecture"></p></div>
+    </header>
+    <section class="tech-section project-section" aria-labelledby="project-title">
+      <div class="project-heading"><h3 id="project-title" data-copy="projectTitle"></h3><div class="project-motifs" aria-hidden="true"><img class="metric-illustration" src="./art/code_workshop.png" alt="" aria-hidden="true"><img class="metric-illustration" src="./art/test_lab.png" alt="" aria-hidden="true"></div></div>
+      <dl id="project-metrics" class="project-metrics"></dl>
+      <p id="project-snapshot" class="metric-note"></p>
+      <details class="metric-evidence">
+        <summary data-copy="countingTitle"></summary>
+        <ul><li data-copy="sourceCounting"></li><li id="test-counting"></li><li data-copy="decisionCounting"></li></ul>
+        <p data-copy="countingLimit"></p>
+        <p id="source-revision"></p>
+      </details>
+    </section>
+    <section id="development-process" class="tech-section" aria-labelledby="development-title"></section>
+    <section class="tech-section engine-section" aria-labelledby="engine-flow-title">
+      <h3 id="engine-flow-title" data-copy="engineFlowTitle"></h3>
+      <p class="metric-note" data-copy="flowExample"></p>
+      <ol class="engine-flow">
+        <li><span class="flow-index" aria-hidden="true">01</span><div><h4 data-copy="flowMove"></h4><p data-copy="flowMoveDetail"></p></div></li>
+        <li><span class="flow-index" aria-hidden="true">02</span><div><h4 data-copy="flowRules"></h4><p data-copy="flowRulesDetail"></p></div></li>
+        <li><span class="flow-index" aria-hidden="true">03</span><div><h4 data-copy="flowState"></h4><p data-copy="flowStateDetail"></p></div></li>
+        <li><span class="flow-index" aria-hidden="true">04</span><div><h4 data-copy="flowEvents"></h4><p data-copy="flowEventsDetail"></p></div></li>
+      </ol>
+    </section>
+    <section class="tech-section engineering-cases" aria-labelledby="engineering-cases-title"><h3 id="engineering-cases-title" data-copy="engineeringCases"></h3><div class="engineering-case-grid"><article><h4 data-copy="caseBlockTitle"></h4><p data-copy="caseBlockDetail"></p></article><article><h4 data-copy="caseCostTitle"></h4><p class="case-cost">4 <span aria-hidden="true">&rarr;</span> 0</p><p data-copy="caseCostDetail"></p></article><article><h4 data-copy="casePrivateTitle"></h4><p data-copy="casePrivateDetail"></p></article></div></section>
+    <section class="accessibility-summary tech-accessibility" aria-labelledby="tech-accessibility-title"><div><h3 id="tech-accessibility-title" data-copy="considered"></h3><p data-copy="techAccess"></p><a class="back" href="./accessibility.html" data-accessibility data-copy="showAccess"></a></div></section>
+    <details class="trace-section"><summary data-copy="traceTitle"></summary>
+    <section class="tech-section session-section" aria-labelledby="session-metrics-title">
+      <h3 id="session-metrics-title" data-copy="sessionMetricsTitle"></h3>
+      <dl id="session-metrics" class="session-metrics"></dl>
+      <h4 class="event-chart-title" data-copy="eventDistribution"></h4>
+      <div id="event-distribution"></div>
+      <p id="trace-range" class="metric-note"></p>
+      <p data-copy="events"></p>
+    </section>
+    </details>
+    <footer class="tech-page-footer"><a class="back tech-return" href="./index.html" data-copy="returnRealm"></a></footer>
+  </section>
+  </template>
+  <dialog id="restart-dialog" aria-labelledby="restart-title" aria-describedby="restart-description">
+    <h2 id="restart-title" data-copy="restartQuestion"></h2><p id="restart-description" data-copy="restartDetail"></p>
+    <div class="restart-actions"><button type="button" class="back" data-restart-cancel data-copy="cancel"></button><button type="button" class="confirm" data-restart-confirm data-copy="restart"></button></div>
+  </dialog>
+  <template id="accessibility-content">
+    <section class="accessibility-page" aria-labelledby="stage-title">
+      <header class="access-page-heading"><div class="access-page-seal" aria-hidden="true"><span class="story-halo"></span><img src="./art/monk.png" alt=""></div><h1 id="stage-title" tabindex="-1" data-copy="aboutAccessibility"></h1><p data-copy="accessLead"></p><a class="back access-return" href="./index.html" data-copy="returnRealm"></a></header>
+      <section class="access-proof access-command-proof" aria-labelledby="access-keyboard-title"><div class="access-proof-copy"><p class="story-kicker">01</p><h2 id="access-keyboard-title" data-copy="keyboardTitle"></h2><p data-copy="keyboardProof"></p><label class="accessibility-toggle access-switch"><input type="checkbox" role="switch" id="bid-pass-shortcuts" checked><span class="switch-track" aria-hidden="true"></span><span data-copy="bidPassKeys"></span></label><p class="access-example-note" data-copy="sampleOnly"></p></div><div class="access-keyboard-example"><div class="access-focus-path" id="access-command-sample"></div><div id="access-demo-result" class="access-demo-result" role="group" aria-live="off"></div><p id="access-demo-status" role="status" aria-live="polite" aria-atomic="true"></p></div></section>
+      <section class="access-proof access-reading-proof" aria-labelledby="access-reading-title"><div class="access-proof-copy"><p class="story-kicker">02</p><h2 id="access-reading-title" data-copy="readingTitle"></h2><p data-copy="readingProof"></p><label class="accessibility-toggle access-switch"><input type="checkbox" role="switch" id="clear-card-labels" aria-describedby="clear-labels-note"><span class="switch-track" aria-hidden="true"></span><span data-copy="clearCards"></span></label><p class="access-example-note" id="clear-labels-note" data-copy="clearCardsHint"></p></div><figure class="access-card-example" id="access-reading-sample"></figure></section>
+      <section class="access-proof" aria-labelledby="access-display-title"><div class="access-proof-copy"><p class="story-kicker">03</p><h2 id="access-display-title" data-copy="displayTitle"></h2><p data-copy="displayProof"></p><fieldset class="accessibility-setting">
+        <legend data-copy="textSize">Text size</legend>
+        <div class="text-size-options">
+          <label><input type="radio" name="text-size" value="normal" checked><span data-copy="normalText">Normal</span></label>
+          <label><input type="radio" name="text-size" value="larger"><span data-copy="largerText">Larger</span></label>
+        </div>
+      </fieldset>
+        <label class="accessibility-toggle"><input type="checkbox" id="high-contrast"><span data-copy="highContrast"></span></label></div><div class="access-values-example" id="access-game-values"></div></section>
+      <section class="access-proof" aria-labelledby="access-motion-title"><div class="access-proof-copy"><p class="story-kicker">04</p><h2 id="access-motion-title" data-copy="motionTitle"></h2><p data-copy="motionProof"></p><label class="accessibility-toggle"><input type="checkbox" id="reduce-motion" aria-describedby="motion-status"><span data-copy="reduce"></span></label><p id="motion-status" role="status"></p><button type="button" class="back" id="motion-system" data-copy="followSystem"></button></div><div class="access-motion-example" aria-hidden="true"><span class="story-halo"></span><img src="./art/monk.png" alt=""><div class="access-demo-believers"><img src="./art/believer.png" alt=""><img src="./art/believer.png" alt=""><img src="./art/believer.png" alt=""></div></div></section>
+      <footer class="access-page-footer"><p data-copy="accessLimit"></p><div class="accessibility-footer"><a class="confirm access-return" href="./index.html"><span class="return-arrow" aria-hidden="true">&larr;</span><span data-copy="returnRealm"></span></a><button type="button" class="back" id="reset-accessibility" data-copy="resetExample"></button><p id="accessibility-status" role="status" aria-atomic="true"></p></div></footer>
+    </section>
+  </template>
+</body>
+</html>
