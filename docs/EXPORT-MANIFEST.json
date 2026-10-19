@@ -390,8 +390,8 @@
       "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
     },
     "mini.js": {
-      "bytes": 22439,
-      "sha256": "ef6ac27eec1081967e7366b7f3dce11a91d50537c7f1004991da19553f10cdc0"
+      "bytes": 22446,
+      "sha256": "03ed2aa2e014bdffe3f1566886fcae7532f67c1557fc7391862ccc6f3b368973"
     },
     "source/bridge.py": {
       "bytes": 1823,
