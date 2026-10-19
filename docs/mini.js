@@ -60,6 +60,14 @@ function miniAnnouncement(before, after, action) {
     mini_next_round:t('Runde abgeschlossen.','Round completed.'), start_mini:t('Deine Mini-Partie beginnt.','Your mini-match begins.'),
   };
   const parts = [move ? `${miniPlayer(move.player)}: ${move.kind === 'pass' ? t('passt endgültig','passes for good') : move.kind === 'bid' ? t('bietet eine verdeckte Karte','bids a face-down card') : move.art ? cardName(move.art) : move.role ? miniRoles()[move.role] : t('Zug ausgeführt','Move completed')}.` : labels[action] || t('Zug ausgeführt.','Move completed.')];
+  if (before.match?.phase === 'contest' && m.phase !== 'contest' && m.score) {
+    parts.push(t('Die Gebote sind aufgedeckt.', 'The bids are revealed.'));
+    parts.push(after.players.map(p => `${playerName(p)}: ${m.score[p.id] ?? 0}`).join(', ') + '.');
+    parts.push(m.winner
+      ? m.winner === 'p1' ? t('Du gewinnst das Phänomen.', 'You win the phenomenon.')
+        : t(`${miniPlayer(m.winner)} gewinnt das Phänomen.`, `${miniPlayer(m.winner)} wins the phenomenon.`)
+      : t('Das Phänomen wird abgelegt.', 'The phenomenon is discarded.'));
+  }
   if (before.stage === 'mini') {
     for (const p of after.players) {
       const old = before.players.find(item => item.id === p.id);
@@ -73,6 +81,7 @@ function miniAnnouncement(before, after, action) {
   else if (m.phase === 'contest') parts.push(m.actor === 'p1' ? t('Du bist beim Bieten am Zug.','It is your turn to bid.') : t(`${miniPlayer(m.actor)} ist beim Bieten am Zug.`, `${miniPlayer(m.actor)} is taking a bid turn.`));
   else if (m.phase === 'draw') parts.push(t('Karten nachziehen.','Draw cards.'));
   else if (m.phase === 'claim') parts.push(t('Macht behalten oder Beine manifestieren.','Keep the power or manifest legs.'));
+  else if (m.phase === 'round_end') parts.push(t('Du kannst jetzt die Runde abschließen.', 'You can now complete the round.'));
   else if (m.phase === 'finished') parts.push(m.winner_ids.length ? t(`Sieger: ${m.winner_ids.map(miniPlayer).join(', ')}.`, `Winner: ${m.winner_ids.map(miniPlayer).join(', ')}.`) : t('Niemand hat gewonnen.','No one won.'));
   return parts.join(' ');
 }
