@@ -618,7 +618,9 @@ html[data-contrast="high"] .viewer-showcase :is(a,button,input):focus-visible{ou
 
 [hidden]{display:none!important}
 #stage-title:not(.visually-hidden):focus-visible{outline:none}
-.topbar nav :is(button,a.accessibility-control,a.tech-control){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid transparent;border-radius:4px;text-decoration:none;color:var(--ink);font-size:calc(13px * var(--text-scale,1))}
+.topbar nav :is(button,a.accessibility-control,a.tech-control,a.about-accessibility-control){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid transparent;border-radius:4px;text-decoration:none;color:var(--ink);font-size:calc(13px * var(--text-scale,1))}
+.topbar nav .about-accessibility-control{max-width:24ch;white-space:normal;text-align:center;overflow-wrap:anywhere}
+.topbar nav .about-accessibility-control:hover{background:var(--paper);border-color:var(--line)}
 .topbar nav a.accessibility-control:hover,.topbar nav a[aria-current="page"]{background:var(--paper);border-color:var(--line)}
 .topbar nav .tech-control{white-space:normal;text-align:center;max-width:24ch}
 .topbar nav .tech-control:hover{background:var(--paper);border-color:var(--line)}

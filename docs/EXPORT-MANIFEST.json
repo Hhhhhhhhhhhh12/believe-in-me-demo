@@ -26,8 +26,8 @@
       "sha256": "04bad7fb8e2faeeada74af104dc4295bd12416d205590505620eb3437492cfa0"
     },
     "accessibility.html": {
-      "bytes": 19085,
-      "sha256": "513e7356b49f5699b682cc5a8212cc7efac3d35a3d60bfccc929a0d876b7b82e"
+      "bytes": 19245,
+      "sha256": "5275782bed6756c1aec6ba13add8f54efac1dfc14c77105419a84442385b5dc0"
     },
     "app.js": {
       "bytes": 91667,
@@ -342,8 +342,8 @@
       "sha256": "aa600b14faaa92fe249203fb1ceb43d8101bbb3aa11700781e7436f3c3cad8dd"
     },
     "index.html": {
-      "bytes": 19085,
-      "sha256": "513e7356b49f5699b682cc5a8212cc7efac3d35a3d60bfccc929a0d876b7b82e"
+      "bytes": 19245,
+      "sha256": "5275782bed6756c1aec6ba13add8f54efac1dfc14c77105419a84442385b5dc0"
     },
     "licenses/BZIP2-LICENSE.txt": {
       "bytes": 1901,
@@ -486,12 +486,12 @@
       "sha256": "3451a8adc44ed187d879cd8260ff26325124b6a4554399345f69f29703af6974"
     },
     "style.css": {
-      "bytes": 135915,
-      "sha256": "cccf8eaf47f3b20fcc01706a2975b21f6702440d62a2e18a73a7d1e922472af7"
+      "bytes": 136159,
+      "sha256": "0cb5112b7cc2b6239e34dcde5d3bab1357f94f11b0fe4d37a7a4d9f41971066e"
     },
     "under-the-surface.html": {
-      "bytes": 19085,
-      "sha256": "513e7356b49f5699b682cc5a8212cc7efac3d35a3d60bfccc929a0d876b7b82e"
+      "bytes": 19245,
+      "sha256": "5275782bed6756c1aec6ba13add8f54efac1dfc14c77105419a84442385b5dc0"
     },
     "vendor/pyodide/LICENSE": {
       "bytes": 16725,
