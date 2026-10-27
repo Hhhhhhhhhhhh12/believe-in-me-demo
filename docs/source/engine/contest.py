@@ -89,6 +89,24 @@ class ContestOutcomeResolution:
     discarded_phenomenon_card_id: str | None = None
 
 
+def must_bid_before_pass(
+    state: GameState,
+    contest: ContestState,
+    *,
+    player_id: str,
+    has_legal_bid: bool,
+) -> bool:
+    if not has_legal_bid:
+        return False
+    if contest.bid_count == 0 and player_id == contest.player_order[contest.current_player_idx]:
+        return True
+    return (
+        len(state.player_order) == 2
+        and len(contest.player_order) == 2
+        and not any(bid.player_id == player_id for bid in contest.played_bids)
+    )
+
+
 def _count_total_believers(player: PlayerState) -> int:
     assigned_role_meeples = sum(max(0, int(amount)) for amount in player.assigned_role_meeples.values())
     prepared_nuns = max(0, int(player.nunnery_state.prepared_nuns))
@@ -884,6 +902,15 @@ def step_contest_with_intents(
 
     if explicit_intent is not None:
         if explicit_intent.action == "pass":
+            if must_bid_before_pass(
+                state,
+                contest,
+                player_id=current_player_id,
+                has_legal_bid=bool(bid_options),
+            ):
+                raise ValueError(
+                    f"Player {current_player_id} must bid one card before passing in a two-player contest."
+                )
             _append_player_pass_event(
                 state,
                 contest=contest,

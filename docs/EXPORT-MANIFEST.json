@@ -61,9 +61,9 @@
       "bytes": 65750,
       "sha256": "37b7c73a8a0d7f1cefc84e4efe5067b5e6bdb0ef1cdf16efbb200c8b0ebbea3a"
     },
-    "art/ash_en.webp": {
-      "bytes": 32940,
-      "sha256": "678db40c0197a980266f288ebe2cc30be79452a735ace4e6adfa156428a62044"
+    "art/ash_en.svg": {
+      "bytes": 44208,
+      "sha256": "4930a48d63e7a44b92e851529affcabe71b71f21b098875b43e2e4d864b430b5"
     },
     "art/believer.png": {
       "bytes": 43132,
@@ -101,9 +101,9 @@
       "bytes": 86188,
       "sha256": "b3710c2391284dae8ac2706ae8a11b87ee1ebec4203807e18add01bbcfc59ed3"
     },
-    "art/frauke_en.webp": {
-      "bytes": 40788,
-      "sha256": "1383d2c8b185395af6a451d53d224616c315d9fa1d56203d78ca40af49779753"
+    "art/frauke_en.svg": {
+      "bytes": 54672,
+      "sha256": "5c9c57b23133b5a015a74ecf6faf436bedec378f034bd6c0894d12b9439b07c7"
     },
     "art/grenade.webp": {
       "bytes": 93490,
@@ -125,9 +125,9 @@
       "bytes": 98808,
       "sha256": "0fb5a8c639ebafb56d7d34c310909b2f12effb9c9abf5d98e4dd1d635798a29b"
     },
-    "art/henk_en.webp": {
-      "bytes": 46404,
-      "sha256": "780c8958fd05d747299540d6e55fce2948048a81fe3487d8bdba14e785dcd14b"
+    "art/henk_en.svg": {
+      "bytes": 62160,
+      "sha256": "5bd9baa4bb7a23127f9317d5df5bb73fa7e146c75ba562ee5342a701249b34cb"
     },
     "art/legs.webp": {
       "bytes": 98954,
@@ -170,8 +170,8 @@
       "sha256": "c2d9c2f53653f1ff4bd531f8fdf1a95d50537e7882cdc2e80eecb9e708456619"
     },
     "art/prophet.png": {
-      "bytes": 59187,
-      "sha256": "026ce4bec21e109a689d2d42a39d80e59e627211af3a5a4a0ad2c682efd501f7"
+      "bytes": 837800,
+      "sha256": "2e7249bbde1608ca68f0e53cfbb65f3ce1d3a4689305cc1f27f224d42299fbd5"
     },
     "art/skull.webp": {
       "bytes": 63402,
@@ -326,16 +326,16 @@
       "sha256": "28095e5f9022012c6148a8b1abaf8acba3f58c490d5d5f32250b6cf327b7db64"
     },
     "art-map.json": {
-      "bytes": 2563,
-      "sha256": "9e0f51729c8f38dff939fba30159844e57a47572743843b8316087c15cac6b7f"
+      "bytes": 2560,
+      "sha256": "eb53d84e8aed67930afdc3f25c4f8693e64b09ced1b019fc92097f36bffe5e45"
     },
     "browser-bridge.js": {
       "bytes": 2817,
       "sha256": "47b22d294e1448e74cfae55adfc39035465d910b7efec939fa91d09ac3a1a4b1"
     },
     "engine-bundle.json": {
-      "bytes": 1067976,
-      "sha256": "e95374dea959b45286fc1559a4f0d81b2d3b8f11765a77d1151f85db2b8413d6"
+      "bytes": 1073892,
+      "sha256": "250dd4a318af2d85932fd59293b17842e6cf5d3d4150e62a54dff0b982f38fb8"
     },
     "i18n.js": {
       "bytes": 17646,
@@ -398,8 +398,8 @@
       "sha256": "27b22c282a0184fcefeb83bcbdf0a9bb43e394c2576efdda686d0ef070651632"
     },
     "source/data/card_assets.json": {
-      "bytes": 6206,
-      "sha256": "fcefe8ef1198e81787e5cd8becc02e9e66fa2c3e4e2bdc93f97ae9d53a390f75"
+      "bytes": 6203,
+      "sha256": "74a0f5565448dab59bfc3971b5bc4eaa8d974ed9fb3877b0e0dd2c272d8787e3"
     },
     "source/data/cards_normalized_de.json": {
       "bytes": 8066,
@@ -426,12 +426,12 @@
       "sha256": "cc8810f43010931197e33f5be43a48269d42626555d1aa1c8744665cb6243ae1"
     },
     "source/engine/contest.py": {
-      "bytes": 83902,
-      "sha256": "c31f1c719ccf02d95ba545d21a61cf642cd9f13de23d297628cdba7deb62aba6"
+      "bytes": 84738,
+      "sha256": "8739d25df959dc9d6721755fce3707e27e8fd4fb5678b603d242cd2c4804ba1a"
     },
     "source/engine/core.py": {
-      "bytes": 577185,
-      "sha256": "832c68fa65a2d0b8d95beced7be66312fcf90300dc1166117ecab3a0c29cb78c"
+      "bytes": 580724,
+      "sha256": "d8eccf7e33307f0a956331cfadbcd6509c330b63e0574a0346a03a9ac607ce61"
     },
     "source/engine/game_modes.py": {
       "bytes": 1013,
@@ -454,8 +454,8 @@
       "sha256": "c2891b328c8f9ec03c6ddc7bfd84ac33d0aa028aace5f3e327e2c85bae9bf944"
     },
     "source/engine/state.py": {
-      "bytes": 10078,
-      "sha256": "f777c3a6071424c9438273d5fdda4ed4c40112a5b38fa96dede01433aea1aea2"
+      "bytes": 10144,
+      "sha256": "8b9a149364913258c2c430b90fe7e30762bd268f710d0b80f03bbacf484259d5"
     },
     "source/ui/__init__.py": {
       "bytes": 47,

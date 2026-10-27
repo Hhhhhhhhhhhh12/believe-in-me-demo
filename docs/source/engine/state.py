@@ -221,10 +221,11 @@ def get_player_team_id(state: GameState, *, player_id: str) -> str | None:
 def get_player_relation(state: GameState, *, source_player_id: str, target_player_id: str) -> str:
     if source_player_id == target_player_id:
         return "self"
-    source_team_id = get_player_team_id(state, player_id=source_player_id)
-    target_team_id = get_player_team_id(state, player_id=target_player_id)
-    if source_team_id is not None and source_team_id == target_team_id:
-        return "teammate"
+    if state.game_format == GAME_FORMAT_TEAM_2V2:
+        source_team_id = get_player_team_id(state, player_id=source_player_id)
+        target_team_id = get_player_team_id(state, player_id=target_player_id)
+        if source_team_id is not None and source_team_id == target_team_id:
+            return "teammate"
     return "opponent"
 
 

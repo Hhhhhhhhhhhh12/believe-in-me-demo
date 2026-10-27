@@ -59,6 +59,7 @@ from .contest import (
     compute_eligible_players,
     finalize_committed_bids,
     get_bid_options,
+    must_bid_before_pass,
     estimate_bid_choice_total,
     get_phenomenon_believer_reward,
     get_known_phenomenon_alignment,
@@ -3386,6 +3387,10 @@ def play_hand_card(
     player = state.players[player_id]
     effect_payload = effect_payload or {}
     card = _get_hand_card(player, card_id=card_id)
+    if card.category == "Segen" and card.name == "Klagelied":
+        _validate_free_believer_target_payments(
+            state, player_id=player_id, effect_payload=effect_payload, context="Klagelied",
+        )
     _validate_hand_card_action(state, player_id=player_id, card=card, effect_payload=effect_payload)
 
     card_cost_waived = is_card_cost_currently_waived(
@@ -4082,6 +4087,9 @@ def unleash_phenomenon_power(
     payload = effect_payload or {}
     if state.beginner_mode:
         require_beginner_phenomenon_payload(payload)
+    _validate_stored_power_effect_choices(
+        state, player_id=player_id, phenomenon_card_id=card_id, effect_payload=payload,
+    )
     payment_choice = payload.get("cost_payment_choice")
     additional_cost = 3 * _count_active_enlightener_rule_text(
         state,
@@ -6220,15 +6228,9 @@ def _get_stored_power_default_payload(
             predicate=lambda candidate_player: any(card.category != "Wahrheit" for card in candidate_player.hand_cards),
         )
         if target_player_id is not None:
-            selected_heavenly_card_ids = [
-                card.card_id
-                for card in state.players[target_player_id].hand_cards
-                if card.category != "Wahrheit"
-            ][:3]
             return {
                 "mode": "take_heavenly_from_fellow",
                 "target_player_id": target_player_id,
-                "selected_heavenly_card_ids": selected_heavenly_card_ids,
             }
         if state.active_commandments:
             return {
@@ -6748,13 +6750,16 @@ def _get_legal_contest_moves(
             )
         )
 
-    opening_bidder_must_bid = (
+    bid_required = (
         contest_state is not None
-        and int(contest_state.bid_count) == 0
-        and player_id == contest_state.player_order[contest_state.current_player_idx]
-        and bool(moves)
+        and must_bid_before_pass(
+            state,
+            contest_state,
+            player_id=player_id,
+            has_legal_bid=bool(moves),
+        )
     )
-    if not opening_bidder_must_bid:
+    if not bid_required:
         moves.append(
             _finalize_legal_move(
                 {
@@ -8174,6 +8179,9 @@ def unleash_stored_power(
     if phenomenon_card_id not in SUPPORTED_STORED_POWER_PHENOMENA:
         raise ValueError(f"Stored phenomenon {phenomenon_card_id} has no modeled unleash effect.")
 
+    _validate_stored_power_effect_choices(
+        state, player_id=player_id, phenomenon_card_id=phenomenon_card_id, effect_payload=effect_payload or {},
+    )
     additional_cost = _get_stored_power_unleash_additional_cost(state, player_id=player_id)
     payment_resolution = {
         "paid_total": 0,
@@ -8404,6 +8412,28 @@ def _resolve_stored_power_effect(
     raise ValueError(f"Stored phenomenon {phenomenon_card_id} has no modeled unleash effect.")
 
 
+def _validate_kometeneinschlag_payment_choices(
+    state: GameState, *, player_id: str, effect_payload: dict[str, Any],
+) -> None:
+    _validate_free_believer_target_payments(
+        state, player_id=player_id, effect_payload=effect_payload, context="Kometeneinschlag",
+    )
+
+
+def _validate_free_believer_target_payments(
+    state: GameState, *, player_id: str, effect_payload: dict[str, Any], context: str,
+) -> None:
+    choices = effect_payload.get("target_payment_choices", {})
+    if not isinstance(choices, dict):
+        raise ValueError(f"{context} requires target_payment_choices to be a dict when provided.")
+    for target_player_id in _get_opponent_player_ids_in_turn_order(state, player_id=player_id):
+        choice = _normalize_meeple_payment_choice(
+            choices.get(target_player_id), context=f"{context} target payment",
+        )
+        if _count_bound_meeples_in_payment_choice(choice) > 0:
+            raise ValueError(f"{context} can sacrifice only free believers; monks, missionaries and nuns are excluded.")
+
+
 def _resolve_stored_power_kometeneinschlag(
     state: GameState,
     *,
@@ -8412,9 +8442,7 @@ def _resolve_stored_power_kometeneinschlag(
     effect_payload: dict[str, Any],
     decision_source: str | None,
 ) -> None:
-    raw_target_payment_choices = effect_payload.get("target_payment_choices", {})
-    if not isinstance(raw_target_payment_choices, dict):
-        raise ValueError("Stored power Kometeneinschlag requires target_payment_choices to be a dict when provided.")
+    _validate_kometeneinschlag_payment_choices(state, player_id=player_id, effect_payload=effect_payload)
 
     opponent_ids = _get_opponent_player_ids_in_turn_order(state, player_id=player_id)
     if not opponent_ids:
@@ -8431,11 +8459,6 @@ def _resolve_stored_power_kometeneinschlag(
 
     total_sacrificed = 0
     for target_player_id in opponent_ids:
-        target_payment_choice = raw_target_payment_choices.get(target_player_id)
-        if target_payment_choice is not None and not isinstance(target_payment_choice, dict):
-            raise ValueError(
-                f"Stored power Kometeneinschlag payment choice for target {target_player_id} must be a dict."
-            )
         requested_sacrifice = 4
         effective_sacrifice = _apply_sacrifice_cost_reduction(
             state,
@@ -8447,7 +8470,7 @@ def _resolve_stored_power_kometeneinschlag(
             player_id=target_player_id,
             amount=effective_sacrifice,
             strict=False,
-            payment_choice=target_payment_choice,
+            payment_choice=None,
             purpose="stored_power_kometeneinschlag_sacrifice",
             trigger_large_sacrifice=False,
         )
@@ -9358,14 +9381,15 @@ def _resolve_stored_power_pest(
     )
 
 
-def _resolve_stored_power_sonnenfinsternis(
-    state: GameState,
-    *,
-    player_id: str,
-    phenomenon_card_id: str,
-    effect_payload: dict[str, Any],
-    decision_source: str | None,
-) -> None:
+def _prepare_sonnenfinsternis_recipient_choice(
+    state: GameState, *, player_id: str, phenomenon_card_id: str, effect_payload: dict[str, Any],
+) -> tuple[str | None, str | None, list[str], str]:
+    """Validate the recipient's own-card response without changing game state.
+
+    recipient_choice is trusted controller data, never a source-player form field.
+    """
+    if "selected_heavenly_card_ids" in effect_payload:
+        raise ValueError("Sonnenfinsternis source payload must not select the recipient's cards.")
     mode = effect_payload.get("mode")
     if mode is not None and mode not in {"take_heavenly_from_fellow", "shatter_commandment"}:
         raise ValueError(
@@ -9387,6 +9411,77 @@ def _resolve_stored_power_sonnenfinsternis(
             resolved_mode = "shatter_commandment"
 
     if resolved_mode == "shatter_commandment":
+        if "recipient_choice" in effect_payload:
+            raise ValueError("Sonnenfinsternis shatter mode must not contain recipient_choice.")
+        return resolved_mode, None, [], "recipient_auto_policy"
+    target_player_id = _resolve_stored_power_target_player_id_with_predicate(
+        state, source_player_id=player_id, effect_payload=effect_payload, effect_label=phenomenon_card_id,
+        predicate=lambda candidate: any(card.category != "Wahrheit" for card in candidate.hand_cards),
+    )
+    candidates = [] if target_player_id is None else [
+        card.card_id for card in state.players[target_player_id].hand_cards if card.category != "Wahrheit"
+    ]
+    required_count = min(3, len(candidates))
+    if "recipient_choice" not in effect_payload:
+        return resolved_mode, target_player_id, candidates[:required_count], "recipient_auto_policy"
+    choice = effect_payload["recipient_choice"]
+    if not isinstance(choice, dict) or target_player_id is None or choice.get("player_id") != target_player_id:
+        raise ValueError("Sonnenfinsternis recipient_choice must belong to the selected fellow god.")
+    selected = choice.get("selected_heavenly_card_ids")
+    if not isinstance(selected, list) or any(not isinstance(card_id, str) for card_id in selected):
+        raise ValueError("Sonnenfinsternis recipient selection must be a list of card-id strings.")
+    if len(selected) != required_count or len(set(selected)) != len(selected):
+        raise ValueError(f"Sonnenfinsternis recipient must choose exactly {required_count} distinct heavenly cards.")
+    if any(card_id not in candidates for card_id in selected):
+        raise ValueError("Sonnenfinsternis recipient may choose only their own heavenly hand cards.")
+    return resolved_mode, target_player_id, list(selected), "recipient_explicit_choice"
+
+
+def _validate_stored_power_effect_choices(
+    state: GameState, *, player_id: str, phenomenon_card_id: str, effect_payload: dict[str, Any],
+) -> None:
+    """Preflight effect choices before paying or consuming the source power."""
+    if phenomenon_card_id == "kometeneinschlag__Phänomene__1":
+        _validate_kometeneinschlag_payment_choices(state, player_id=player_id, effect_payload=effect_payload)
+    elif phenomenon_card_id == "sonnenfinsternis__Phänomene__1":
+        _prepare_sonnenfinsternis_recipient_choice(
+            state, player_id=player_id, phenomenon_card_id=phenomenon_card_id, effect_payload=effect_payload,
+        )
+    elif phenomenon_card_id == "kugelblitz__Phänomene__1":
+        target = _resolve_stored_power_target_player_id_with_predicate(
+            state, source_player_id=player_id, effect_payload=effect_payload, effect_label=phenomenon_card_id,
+            predicate=lambda candidate: bool(candidate.stored_phenomena),
+        )
+        if target is None:
+            return
+        powers = state.players[target].stored_phenomena
+        requested = effect_payload.get("target_phenomenon_card_id")
+        if requested is not None and (not isinstance(requested, str) or requested not in powers):
+            raise ValueError("Kugelblitz must trigger an available stored phenomenon of its target.")
+        copied = requested or powers[0]
+        if copied == phenomenon_card_id:
+            return
+        nested = effect_payload.get("nested_effect_payload")
+        if nested is not None and not isinstance(nested, dict):
+            raise ValueError("Kugelblitz nested_effect_payload must be a dict when provided.")
+        _validate_stored_power_effect_choices(
+            state, player_id=player_id, phenomenon_card_id=copied, effect_payload=nested or {},
+        )
+
+
+def _resolve_stored_power_sonnenfinsternis(
+    state: GameState,
+    *,
+    player_id: str,
+    phenomenon_card_id: str,
+    effect_payload: dict[str, Any],
+    decision_source: str | None,
+) -> None:
+    resolved_mode, target_player_id, selected_card_ids, card_choice_source = _prepare_sonnenfinsternis_recipient_choice(
+        state, player_id=player_id, phenomenon_card_id=phenomenon_card_id, effect_payload=effect_payload,
+    )
+
+    if resolved_mode == "shatter_commandment":
         _resolve_stored_power_shatter_commandment(
             state,
             player_id=player_id,
@@ -9396,13 +9491,6 @@ def _resolve_stored_power_sonnenfinsternis(
         )
         return
 
-    target_player_id = _resolve_stored_power_target_player_id_with_predicate(
-        state,
-        source_player_id=player_id,
-        effect_payload=effect_payload,
-        effect_label=phenomenon_card_id,
-        predicate=lambda candidate_player: any(card.category != "Wahrheit" for card in candidate_player.hand_cards),
-    )
     if target_player_id is None:
         append_event(
             state.event_log,
@@ -9418,24 +9506,6 @@ def _resolve_stored_power_sonnenfinsternis(
 
     target_player = state.players[target_player_id]
     player = state.players[player_id]
-    candidate_heavenly_cards = [card for card in target_player.hand_cards if card.category != "Wahrheit"]
-    raw_selected_card_ids = effect_payload.get("selected_heavenly_card_ids")
-    selected_card_ids: list[str]
-    if raw_selected_card_ids is not None:
-        if not isinstance(raw_selected_card_ids, list):
-            raise ValueError(f"Stored power {phenomenon_card_id} selected_heavenly_card_ids must be a list.")
-        if any(not isinstance(card_id, str) for card_id in raw_selected_card_ids):
-            raise ValueError(f"Stored power {phenomenon_card_id} selected_heavenly_card_ids must contain strings only.")
-        selected_card_ids = list(raw_selected_card_ids)
-    else:
-        selected_card_ids = [card.card_id for card in candidate_heavenly_cards[:3]]
-
-    candidate_card_ids = [card.card_id for card in candidate_heavenly_cards]
-    if any(card_id not in candidate_card_ids for card_id in selected_card_ids):
-        raise ValueError(f"Stored power {phenomenon_card_id} selected unknown heavenly cards for player {target_player_id}.")
-    if len(selected_card_ids) > 3:
-        raise ValueError(f"Stored power {phenomenon_card_id} cannot take more than 3 heavenly cards.")
-
     transferred_cards: list[CardRef] = []
     for card_id in selected_card_ids:
         transferred_card = _pop_card_from_hand(target_player, card_id=card_id)
@@ -9449,6 +9519,8 @@ def _resolve_stored_power_sonnenfinsternis(
         phenomenon_card_id=phenomenon_card_id,
         effect_kind="take_heavenly_from_fellow_or_shatter_commandment",
         selected_mode="take_heavenly_from_fellow",
+        chooser_player_id=target_player_id,
+        card_choice_source=card_choice_source,
         transferred_card_ids=[card.card_id for card in transferred_cards],
         transferred_count=len(transferred_cards),
         player_hand_size_after=len(player.hand_cards),
@@ -10203,13 +10275,12 @@ def _resolve_blessing_play(
 
     if resolution["effect_name"] == "Klagelied":
         sacrifice_amount = resolution["sacrifice_amount"]
-        target_payment_choices = effect_payload.get("target_payment_choices", {}) if effect_payload else {}
-        if not isinstance(target_payment_choices, dict):
-            raise ValueError("Klagelied requires target_payment_choices as a dict when provided.")
+        _validate_free_believer_target_payments(
+            state, player_id=player_id, effect_payload=effect_payload or {}, context="Klagelied",
+        )
         affected_player_ids: list[str] = []
         for other_player_id in _get_opponent_player_ids_in_turn_order(state, player_id=player_id):
             other_player = state.players[other_player_id]
-            payment_choice = target_payment_choices.get(other_player_id)
             effective_sacrifice_amount = _apply_sacrifice_cost_reduction(
                 state,
                 player_id=other_player_id,
@@ -10220,7 +10291,7 @@ def _resolve_blessing_play(
                 player_id=other_player_id,
                 amount=effective_sacrifice_amount,
                 strict=False,
-                payment_choice=payment_choice,
+                payment_choice=None,
                 purpose="blessing_klagelied",
             )
             affected_player_ids.append(other_player_id)
@@ -13149,6 +13220,10 @@ def commit_grenade_meeple(
 
     next_tier = min(3, grenade_state.meeples_committed + 1)
     next_effect = grenade_state.grenade.tier_effects.get(next_tier, {})
+    if (detonate or next_tier == 3) and next_effect.get("effect") == "forced_total_sacrifice":
+        _validate_free_believer_target_payments(
+            state, player_id=player_id, effect_payload=effect_payload or {}, context="Kalte Rache",
+        )
     if (detonate or next_tier == 3) and next_effect.get("effect") == "shatter_commandments":
         _grenade_commandment_choices(
             state, player_id=player_id, grenade_id=grenade_state.grenade.card_id,
@@ -13235,6 +13310,10 @@ def _detonate_grenade(
     if grenade is None:
         raise ValueError(f"Player {player_id} has no grenade to detonate.")
 
+    if grenade.tier_effects.get(tier, {}).get("effect") == "forced_total_sacrifice":
+        _validate_free_believer_target_payments(
+            state, player_id=player_id, effect_payload=effect_payload or {}, context="Kalte Rache",
+        )
     grenade_state.used = True
     grenade_state.detonated_tier = tier
 
@@ -13589,9 +13668,9 @@ def _resolve_grenade_forced_total_sacrifice(
         )
         return
 
-    raw_payment_choices = effect_payload.get("target_payment_choices", {})
-    if not isinstance(raw_payment_choices, dict):
-        raise ValueError(f"Grenade {grenade_id} target_payment_choices must be a dict when provided.")
+    _validate_free_believer_target_payments(
+        state, player_id=player_id, effect_payload=effect_payload, context="Kalte Rache",
+    )
     raw_target_sacrifice_amounts = effect_payload.get("target_sacrifice_amounts", {})
     if not isinstance(raw_target_sacrifice_amounts, dict):
         raise ValueError(f"Grenade {grenade_id} target_sacrifice_amounts must be a dict when provided.")
@@ -13614,25 +13693,17 @@ def _resolve_grenade_forced_total_sacrifice(
             requested_target_sacrifice = min(remaining, target_sacrifice_amounts.get(target_player_id, 0))
             if requested_target_sacrifice <= 0:
                 continue
-        payment_choice = raw_payment_choices.get(target_player_id)
-        if payment_choice is not None and not isinstance(payment_choice, dict):
-            raise ValueError(f"Grenade {grenade_id} payment choice for target {target_player_id} must be a dict.")
         effective_target_sacrifice = _apply_sacrifice_cost_reduction(
             state,
             player_id=target_player_id,
             amount=requested_target_sacrifice,
-        )
-        resolved_payment_choice = payment_choice or _build_auto_grenade_payment_choice(
-            state,
-            player_id=target_player_id,
-            amount=effective_target_sacrifice,
         )
         payment_resolution = _spend_player_meeples(
             state,
             player_id=target_player_id,
             amount=effective_target_sacrifice,
             strict=False,
-            payment_choice=resolved_payment_choice,
+            payment_choice=None,
             purpose=f"grenade_{grenade_id}_forced_total_sacrifice",
         )
         actual_sacrifice = int(payment_resolution["paid_total"])
