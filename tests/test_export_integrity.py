@@ -19,6 +19,16 @@ BUNDLE = EXPORT / "engine-bundle.json"
 MANIFEST = EXPORT / "EXPORT-MANIFEST.json"
 
 
+def exported_source_files() -> list[Path]:
+    """Ignore Python bytecode generated during tests; it is never exported."""
+    return sorted(
+        path for path in SOURCES.rglob("*")
+        if path.is_file()
+        and "__pycache__" not in path.parts
+        and path.suffix not in {".pyc", ".pyo"}
+    )
+
+
 class PublishedEngineIntegrityTests(unittest.TestCase):
     def test_browser_bundle_matches_all_readable_sources(self) -> None:
         bundle = json.loads(BUNDLE.read_text(encoding="utf-8"))
@@ -39,8 +49,7 @@ class PublishedEngineIntegrityTests(unittest.TestCase):
 
         source_paths = {
             path.relative_to(SOURCES).as_posix()
-            for path in SOURCES.rglob("*")
-            if path.is_file()
+            for path in exported_source_files()
         }
         self.assertTrue(source_paths, "No readable engine sources found")
         self.assertEqual(
@@ -61,13 +70,11 @@ class PublishedEngineIntegrityTests(unittest.TestCase):
         self.assertEqual(manifest["schema"], 1)
         recorded = manifest["files"]
 
-        published_files = [BUNDLE] + [
-            path for path in SOURCES.rglob("*") if path.is_file()
-        ]
+        published_files = [BUNDLE, *exported_source_files()]
         for file_path in published_files:
             name = file_path.relative_to(EXPORT).as_posix()
             with self.subTest(path=name):
-                self.assertIn(name, recorded)
+                self.assertTrue(name in recorded, f"Missing export manifest entry: {name}")
                 raw = file_path.read_bytes()
                 self.assertEqual(recorded[name]["bytes"], len(raw))
                 self.assertEqual(
