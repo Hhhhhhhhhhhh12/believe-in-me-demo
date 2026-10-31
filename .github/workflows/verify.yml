@@ -1,6 +1,15 @@
 name: Verify
 
-on: [push, pull_request]
+# PR validation plus a post-merge main check; avoid duplicate feature-push runs.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
