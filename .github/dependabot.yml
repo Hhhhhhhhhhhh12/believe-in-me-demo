@@ -1,0 +1,16 @@
+# Keep GitHub Actions maintained without opening a PR for every action.
+# This does not update the vendored Pyodide runtime or pip installs in run steps.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "10:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 2
+    groups:
+      actions:
+        patterns:
+          - "*"
