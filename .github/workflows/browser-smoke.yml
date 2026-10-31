@@ -6,6 +6,11 @@ on:
   push:
     branches: [main]
 
+# Superseded commits need no second browser run or failure notification.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -24,3 +29,11 @@ jobs:
         run: python -m playwright install --with-deps chromium
       - name: Run real-browser smoke test
         run: python -m unittest discover -s tests/browser -p 'test_*.py' -v
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-smoke-failure
+          path: test-results/browser/
+          if-no-files-found: ignore
+          retention-days: 7
