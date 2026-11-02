@@ -769,15 +769,15 @@ html[data-contrast="high"] .access-switch input:focus-visible+.switch-track{outl
 @media(max-width:620px){.topbar nav a.accessibility-control{width:44px;padding:8px}.topbar nav a.accessibility-control>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.topbar nav :is(#restart,#logout){padding:10px;flex-shrink:0}}
 
 /* Accepted mini-match table: board geometry stays independent of the layout. */
-.mini-match .mini-heading{min-height:82px;border:0;padding:12px 0 22px;margin:0;align-items:center}
+.mini-match .mini-heading{min-height:64px;border:0;padding:6px 0 12px;margin:0;align-items:center}
 .mini-match .mini-heading .mini-realm-title{display:block}
-.mini-match .mini-heading h1{position:relative;padding-top:18px;font:500 calc(34px * var(--text-scale,1))/1.2 Georgia,serif}
+.mini-match .mini-heading h1{position:relative;padding-top:18px;font:500 calc(30px * var(--text-scale,1))/1.2 Georgia,serif}
 .mini-name-halo{position:absolute;left:14px;top:0;width:72px;height:19px;border:3px solid #bc902e;border-radius:50%;transform:rotate(-12deg);box-shadow:inset 0 1px 0 #fff3bd,0 2px 0 #efce79,0 5px 8px #bea45524;pointer-events:none}
 .mini-match .mini-round-status{justify-content:flex-end;color:var(--muted);font-size:calc(12px * var(--text-scale,1))}
 .mini-match .mini-play-area{--mini-actions-width:184px;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) var(--mini-actions-width);gap:22px;padding-top:0}
 .mini-match .mini-center,.mini-match .mini-decisions{grid-column:auto;grid-row:auto}
 .mini-match .mini-tableau .original-tableau{max-width:none;filter:drop-shadow(0 2px 1px #17372530) drop-shadow(0 12px 8px #17372526)}
-.mini-match .mini-flock{min-height:44px;padding-bottom:12px}
+.mini-match .mini-flock{min-height:36px;padding-bottom:6px}
 .mini-match .mini-flock>div:first-child{gap:6px;align-items:baseline}
 .mini-match .mini-flock h2{margin-right:auto;font-size:calc(14px * var(--text-scale,1))}
 .mini-match .mini-flock strong{font-size:calc(28px * var(--text-scale,1))}
@@ -787,21 +787,21 @@ html[data-contrast="high"] .access-switch input:focus-visible+.switch-track{outl
 .mini-match .mini-tableau-caption{justify-content:space-between;color:var(--muted);gap:6px;margin-top:4px}
 .mini-free-flock .tokens{justify-content:center;gap:9px;margin:12px 0 0;min-height:30px}
 .mini-free-flock .token{width:22px;height:30px;filter:drop-shadow(0 2px 1px #17372530)}
-.mini-match .mini-table-title{display:flex;align-items:center;min-height:44px;padding-bottom:12px;font-size:calc(14px * var(--text-scale,1))}
-.mini-match .middleboard{width:100%;filter:drop-shadow(0 2px 1px #17372530) drop-shadow(0 8px 5px #17372526)}
+.mini-match .mini-table-title{display:flex;align-items:center;min-height:36px;padding-bottom:6px;font-size:calc(14px * var(--text-scale,1))}
+.mini-match .middleboard{width:100%;max-width:400px;margin-inline:auto;filter:drop-shadow(0 2px 1px #17372530) drop-shadow(0 8px 5px #17372526)}
 .mini-match .mini-contest-prize{padding:0;max-width:none;margin:0}
 .mini-match .mini-center .contest-table{grid-template-columns:1fr}
 .mini-match .mini-center .bid-seat{display:grid;grid-template-columns:54px minmax(0,1fr);gap:4px 10px;text-align:left}
 .mini-match .mini-center .bid-seat .bid-portrait{margin:0;width:50px;grid-row:1/4}
-.mini-match .mini-opponents{gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.mini-match .mini-opponents{gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
 .mini-match .mini-opponent{gap:8px;padding-left:4px;align-items:center}
 .mini-match .mini-opponent .bid-portrait{width:54px;border-radius:50%;overflow:hidden;box-shadow:0 3px 3px #17372520}
 .mini-match .mini-opponent h2{font-size:calc(12px * var(--text-scale,1))}
 .mini-match .mini-opponent p,.mini-match .mini-opponent small{font-size:calc(11px * var(--text-scale,1));line-height:1.5;color:var(--muted)}
-.mini-selected-preview{display:flex;justify-content:center;align-items:center;gap:18px;min-height:178px;padding:26px 8px 0}
-.mini-card-altar{position:relative;display:block;width:88px;flex-shrink:0}
-.mini-card-altar:before{content:'';position:absolute;left:-14px;top:-19px;width:116px;height:30px;border:3px solid #bd9236;border-radius:50%;box-shadow:inset 0 1px 0 #fff4cd,0 2px 0 #edcc7b,0 5px 8px #bea45524;transform:rotate(-8deg);pointer-events:none}
-.mini-preview-art{display:block;width:88px;aspect-ratio:652/889;object-fit:contain;transform:rotate(-5deg);border-radius:4px;box-shadow:3px 5px 6px #17372533}
+.mini-selected-preview{display:flex;justify-content:center;align-items:center;gap:14px;min-height:108px;padding:14px 8px 0}
+.mini-card-altar{position:relative;display:block;width:64px;flex-shrink:0}
+.mini-card-altar:before{content:'';position:absolute;left:-12px;top:-14px;width:88px;height:24px;border:3px solid #bd9236;border-radius:50%;box-shadow:inset 0 1px 0 #fff4cd,0 2px 0 #edcc7b,0 5px 8px #bea45524;transform:rotate(-8deg);pointer-events:none}
+.mini-preview-art{display:block;width:64px;aspect-ratio:652/889;object-fit:contain;transform:rotate(-5deg);border-radius:4px;box-shadow:3px 5px 6px #17372533}
 .mini-preview-effect{min-width:0;max-width:132px;font:500 calc(15px * var(--text-scale,1))/1.4 Georgia,serif;overflow-wrap:anywhere}
 .mini-preview-effect>strong{display:block;font:500 calc(32px * var(--text-scale,1))/1.2 Georgia,serif;color:var(--green)}
 .mini-preview-meeples{display:flex;flex-wrap:wrap;gap:3px;margin-top:9px}
@@ -825,9 +825,9 @@ html[data-contrast="high"] .access-switch input:focus-visible+.switch-track{outl
 .mini-match .mini-grenade-actions{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 0}
 .mini-match .mini-grenade-actions summary{font-size:calc(11px * var(--text-scale,1));font-weight:500;overflow-wrap:anywhere}
 .mini-match .mini-grenade-actions summary img{width:26px;height:30px;flex-shrink:0}
-.mini-match .mini-hand{margin-top:24px;padding:18px 0 22px}
-.mini-match .mini-hand-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding:14px 10px 8px;align-items:start}
-.mini-match .mini-hand-card{--hand-angle:0deg;width:100%;max-width:180px;justify-self:center;transform:rotate(var(--hand-angle));transform-origin:50% 90%;transition:transform .2s ease}
+.mini-match .mini-hand{margin-top:14px;padding:12px 0 16px}
+.mini-match .mini-hand-grid{grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;padding:12px 10px 8px;align-items:start}
+.mini-match .mini-hand-card{--hand-angle:0deg;width:100%;max-width:140px;justify-self:center;transform:rotate(var(--hand-angle));transform-origin:50% 90%;transition:transform .2s ease}
 .mini-match .mini-hand-card:nth-child(6n+1){--hand-angle:-6deg}
 .mini-match .mini-hand-card:nth-child(6n+2){--hand-angle:-3.6deg}
 .mini-match .mini-hand-card:nth-child(6n+3){--hand-angle:-1.2deg}
@@ -871,8 +871,10 @@ html[data-motion="reduced"] .mini-match .mini-hand-card{transition:none}
 }
 
 /* Commands stay beside their cards and tableau, not in a third column. */
-.mini-match .mini-play-area{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);max-width:1160px;margin-inline:auto;gap:28px}
+.mini-match .mini-play-area{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);max-width:1000px;margin-inline:auto;gap:20px}
 .mini-match .mini-center{grid-column:auto;grid-row:auto}
+/* Scale the board as a whole; card/token positions remain proportional. */
+.mini-match .mini-tableau .original-tableau{max-width:min(320px,36vh)}
 .board-role{width:6.2%;height:auto;aspect-ratio:1081/1145;overflow:hidden;pointer-events:none}
 .board-role img{position:absolute;max-width:none;width:116%;height:109.5%;left:-10.3%;top:-4.6%;object-fit:fill}
 .board-role-missionary{aspect-ratio:990/1063}
@@ -888,12 +890,10 @@ html[data-motion="reduced"] .mini-match .mini-hand-card{transition:none}
 .mini-phenomenon-examples{margin:0}
 .mini-phenomenon-examples figcaption{margin:8px 0;color:var(--muted);text-align:right;font-size:calc(11px * var(--text-scale,1))}
 .mini-phenomenon-selection{position:absolute;inset:24% 3% 15%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5%;align-items:center}
-.mini-phenomenon-selection .card-art.landscape{width:100%;aspect-ratio:889/652;box-shadow:0 3px 5px #17372540}
-.mini-phenomenon-selection .card-art:nth-child(1){transform:rotate(-5deg)}
-.mini-phenomenon-selection .card-art:nth-child(3){transform:rotate(5deg)}
+.mini-phenomenon-selection .card-art.landscape{width:100%;aspect-ratio:889/652;transform:none;box-shadow:0 3px 5px #17372540}
 .mini-phenomenon-selection .card-art:focus-visible{outline-offset:3px;z-index:2}
 img[data-artwork="ash"],img[data-artwork="ash_en"]{mask:url(#relic-ash-cutline)}
-.mini-match .mini-hand-heading{align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 24px}
+.mini-match .mini-hand-heading{position:sticky;top:0;z-index:5;background:var(--paper);align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding-block:4px}
 .mini-hand-title{display:flex;align-items:baseline;gap:12px}
 .mini-hand-title>span{font-size:calc(12px * var(--text-scale,1));color:var(--muted)}
 .mini-turn-tools{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:12px;min-width:0;font-size:calc(13px * var(--text-scale,1));line-height:1.5}
@@ -910,9 +910,13 @@ img[data-artwork="ash"],img[data-artwork="ash_en"]{mask:url(#relic-ash-cutline)}
 .hand-play-commands button.confirm{width:100%;overflow-wrap:anywhere}
 .mini-finished{justify-content:flex-start;border-top:1px solid var(--line);margin-top:24px;padding:18px 0}
 html[data-contrast="high"] :is(.mini-turn-tools button.next,.hand-play-commands button.confirm,.mini-tableau-tools button.confirm){border-color:var(--ink);color:#fff;box-shadow:inset 0 0 0 1px #fff}
-@container demo (max-width:800px){
+@container demo (min-width:641px) and (max-width:800px){
+  .mini-match .mini-hand-grid{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+}
+@container demo (max-width:640px){
   .mini-match .mini-play-area{grid-template-columns:1fr;gap:20px}
   .mini-match .mini-center{grid-column:1;grid-row:auto}
+  .mini-match .mini-tableau .original-tableau{max-width:min(260px,36vh)}
   .mini-turn-tools{justify-content:flex-start;width:100%}
   .mini-tableau-tools .mini-grenade-actions{width:100%}
   .mini-free-flock .tokens{max-width:177px;margin-inline:auto;row-gap:8px}
