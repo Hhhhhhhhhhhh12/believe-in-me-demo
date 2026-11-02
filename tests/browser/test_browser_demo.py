@@ -65,12 +65,16 @@ class BrowserDemoSmokeTest(unittest.TestCase):
             'aria-busy', 'false', timeout=WORKER_TIMEOUT
         )
         expect(page.locator('#error')).to_be_hidden()
-        expect(page.locator('.mini-hand-card')).to_have_count(len(state['match']['hand']))
+        # The terminal screen hides the hand while the engine retains its cards.
+        finished = state['match']['phase'] == 'finished'
+        expect(page.locator('.mini-hand-card')).to_have_count(
+            0 if finished else len(state['match']['hand'])
+        )
         self.assertEqual(
             page.locator('[data-mini-select]').evaluate_all(
                 '(nodes) => nodes.map(node => node.dataset.miniSelect)'
             ),
-            [card['id'] for card in state['match']['hand']],
+            [] if finished else [card['id'] for card in state['match']['hand']],
         )
         own = next(player for player in state['players'] if player['id'] == 'p1')
         expect(page.locator('.mini-flock strong')).to_have_text(str(own['believers']))
@@ -103,7 +107,67 @@ class BrowserDemoSmokeTest(unittest.TestCase):
             page.evaluate('(key) => sessionStorage.getItem(key)', STORAGE_KEY), history
         )
 
-    def exercise_match(self, *, delay_worker=False) -> None:
+    def finish_match_through_controls(self, page, state) -> None:
+        transitions = []
+        for _ in range(150):
+            match = state['match']
+            phase = match['phase']
+            if phase == 'finished':
+                break
+            self.assertFalse(match['game_over'])
+            self.assertEqual(match['winner_ids'], [])
+            if phase == 'round_end':
+                selector = '[data-action="mini_next_round"]'
+            elif phase == 'claim':
+                manifest = 'true' if match['can_manifest'] else 'false'
+                selector = f'[data-action="mini_claim"][data-manifest="{manifest}"]'
+            elif phase == 'nun':
+                selector = '[data-action="mini_nun"][data-sacrifice="false"]'
+            elif match['actor'] in {'p2', 'p3'}:
+                selector = '[data-action="mini_advance"]'
+            elif phase == 'turn':
+                selector = '[data-action="mini_end_turn"]'
+            elif phase == 'draw':
+                selector = '[data-action="mini_draw_rest"]'
+            elif phase == 'contest':
+                desired = 'truth_p1_4' if match['own_bid_total'] == 0 else 'truth_p1_6'
+                bid = next((card for card in match['hand']
+                            if card['art'] == desired and card['can_bid']), None) if state['round'] == 1 else None
+                if bid is None and match['can_pass']:
+                    selector = '[data-action="mini_pass"]'
+                else:
+                    bid = bid or next(card for card in match['hand'] if card['can_bid'])
+                    selector = f'[data-action="mini_bid"][data-card-id="{bid["id"]}"]'
+            else:
+                self.fail(f'Unexpected mini-match phase: {phase}')
+            before = state
+            state = self.click_command(page, selector, before)
+            if phase == 'claim' and before['round'] == 1:
+                self.assertEqual(state['body_count'], 3)
+                self.assertTrue(state['revealed'])
+                self.assertEqual(state['match']['rounds_left'], 3)
+                expect(page.locator('.board-legs')).to_be_visible()
+            if state['endgame']:
+                expect(page.locator('.mini-round-status')).to_contain_text(
+                    f'Twilight: {state["match"]["rounds_left"]} final rounds'
+                )
+            if phase == 'round_end':
+                transitions.append((before['round'], match['rounds_left'], state['match']['rounds_left']))
+        else:
+            self.fail('The browser mini-match did not finish within 150 commands')
+        self.assertEqual(transitions, [(1, 3, 3), (2, 3, 2), (3, 2, 1), (4, 1, 0)])
+        self.assertTrue(state['match']['game_over'])
+        self.assertEqual(state['match']['end_reason'], 'game_over_endgame')
+        self.assertEqual(state['match']['winner_ids'], ['p1'])
+        expect(page.locator('.mini-finished h2')).to_have_text('The Heavenly Realm has spoken.')
+        expect(page.locator('.mini-finished .mini-result')).to_have_text('You')
+        expect(page.locator('[data-action="mini_next_round"]')).to_have_count(0)
+        expect(page.locator('[data-action="mini_bid"]')).to_have_count(0)
+        self.assert_reloaded(page, state)
+        expect(page.locator('.mini-finished .mini-result')).to_have_text('You')
+        expect(page.locator('.mini-finished [data-action="restart"]')).to_be_visible()
+
+    def exercise_match(self, *, delay_worker=False, complete_match=False) -> None:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             context = browser.new_context(locale='en-US', reduced_motion='reduce')
@@ -168,6 +232,8 @@ class BrowserDemoSmokeTest(unittest.TestCase):
                 advanced = self.click_command(page, '[data-action="mini_advance"]', ended)
                 self.assertEqual(advanced['match']['last_move']['player'], 'p2')
                 self.assertEqual(advanced['match']['actions'], ended['match']['actions'] - 1)
+                if complete_match:
+                    self.finish_match_through_controls(page, advanced)
                 self.assertEqual(page_errors, [], 'Uncaught browser errors')
                 if delay_worker:
                     self.assertEqual(len(delayed_requests), 3, 'Initial load and two reloads must start real workers')
@@ -196,6 +262,9 @@ class BrowserDemoSmokeTest(unittest.TestCase):
 
     def test_slow_worker_initialization_and_replay(self) -> None:
         self.exercise_match(delay_worker=True)
+
+    def test_complete_mini_match_manifest_countdown_winner_and_reload(self) -> None:
+        self.exercise_match(complete_match=True)
 
 
 if __name__ == '__main__':

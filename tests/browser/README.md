@@ -19,7 +19,7 @@ job must not discover the optional Playwright tests recursively.
 
 ## Assertions and timing
 
-Both tests start with an isolated browser context and empty session storage.
+All tests start with an isolated browser context and empty session storage.
 They check English controls, the three players, six starting believers, and the
 rendered hand against the worker state. A real Chaos blessing consumes an action
 and its card, raising the flock from six to ten. The test reloads and compares
@@ -39,11 +39,26 @@ flock and error status after each command. Startup/replay allow 180 seconds,
 covering the bridge's 150-second request budget; normal controls allow 15 seconds.
 The one-second delay is fault injection, not a substitute for readiness assertions.
 
+The third scenario continues through a complete mini-match using visible controls.
+It wins the first contest with Truth 4 + 6, manifests Walter's legs, and checks that
+the trigger round preserves all three final rounds. The next three completed rounds
+reduce the countdown to 2, 1 and 0. It checks the final `You` winner display, absence
+of further bid/round commands, and an exact reload of the terminal state. It reads
+worker state for assertions and command selection; game actions use UI clicks.
+
+The standard-library suite also includes `tests/test_bim_endgame.py`. Its three
+integration tests cover a completed-god win despite an opponent's larger flock,
+collective loss when the phenomenon pile empties without a complete god, and
+terminal command rejection, exact replay and restart through the browser API.
+
 On failure, best-effort screenshots, DOM, browser diagnostics and a Playwright
 trace are saved under `test-results/browser/`; CI uploads them for seven days.
 There are no retries that could turn a failing test green.
 
-## Review evidence and merge gate (31 October 2026)
+## Historical review evidence and merge gate (31 October 2026)
+
+This section records the earlier PR #3 review; its draft status, test counts and
+five-check ruleset describe that date rather than the current repository state.
 
 The original PR head `575cfb4c961ed396a4d321c4f4b79044a840b1fe` passed
 [Browser Smoke run 41033355343](https://github.com/Hhhhhhhhhhhh12/believe-in-me-demo/actions/runs/41033355343)
@@ -79,8 +94,8 @@ changed; genuine failures still fail CI.
 
 ## Scope limits
 
-This is an opening-flow and persistence smoke test, not full game qualification.
-It does not cover a complete match, all bidding/claim/nun branches, invalid-command
+This covers the opening, persistence and one complete winning path, not full game qualification.
+It does not cover every bidding/claim/nun branch, invalid-command
 UI recovery, corrupted storage, the 2,000-command history limit, another browser,
 mobile layout or an accessibility audit. Reload restores the same-tab session;
 closing the tab and starting a new session is not a persistence guarantee.
