@@ -28,7 +28,7 @@
     if(!response.ok)throw new Error('The original artwork map could not be loaded.');
     art=await response.json();
     const state=await request('initialize',{commands,mini});
-    if(!commands.length&&mini)commands=[{action:'start_mini',revision:0,starting_believers:6}];
+    if(!commands.length&&mini)commands=[{action:'start_mini',revision:0,starting_believers:6,starting_nuns:1}];
     save();return state;
   })();
   function save(){try{sessionStorage.setItem(storageKey,JSON.stringify(commands));}catch{}}
@@ -42,7 +42,7 @@
       if(url.pathname==='/logout'){commands=[];save();return Response.json({});}
       if(url.pathname==='/api/state')return Response.json(await request('state'));
       const payload=JSON.parse(options.body||'{}');
-      if(payload.action==='start_mini')payload.starting_believers=6;
+      if(payload.action==='start_mini'){payload.starting_believers=6;payload.starting_nuns=1;}
       const result=await request('action',payload);
       commands.push(payload);save();return Response.json(result);
     } catch(error){return Response.json({error:error.message||String(error)},{status:400});}

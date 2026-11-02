@@ -4,8 +4,14 @@
 
 Play a prepared mini-match of Believe in Me with the original card artwork and
 the Python rules engine running locally in a Pyodide Web Worker. New matches
-start with six believers. Opponent steps wait for Continue, so results remain
+start with six free believers and one ready Battle nun. This prepared demo setup
+activates your nun temple early; the regular game unlocks it at Twilight.
+Opponent steps wait for Continue, so results remain
 available to read. No account, Python server or installation is required.
+
+The Prophet starts in the visible reserve. When claimed, its chip moves to the
+holder's display. Saved command histories without the `starting_nuns` field keep
+their earlier nun-free setup; restart to use the new prepared setup.
 
 Display settings and local progress stay in your browser. There is no password
 protection; opponent hands are concealed by the interface, not against developer

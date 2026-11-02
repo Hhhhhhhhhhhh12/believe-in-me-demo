@@ -14,8 +14,8 @@
       "sha256": "b716c037c23091c6e0be0ea6216c0d257e5556650774adc8f93127f4c5cafd50"
     },
     "PUBLIC-EXPORT.json": {
-      "bytes": 227,
-      "sha256": "0dfb9636c04efe65f5d17dde7889ce4db864e9d0da936105a9ec07592602899f"
+      "bytes": 256,
+      "sha256": "367741c4aed3018827c2ae9ccdcbdd2b4d9cb62ca5054ecf9bc16b723a67eac0"
     },
     "README.md": {
       "bytes": 1279,
@@ -30,8 +30,8 @@
       "sha256": "5275782bed6756c1aec6ba13add8f54efac1dfc14c77105419a84442385b5dc0"
     },
     "app.js": {
-      "bytes": 91667,
-      "sha256": "692396a9cdee9b2c9674d398db4080cea5633cf4da94015d93379461afedaa19"
+      "bytes": 91663,
+      "sha256": "4b9b5aa8969b946fe095584d7b7c45c2f70671deb1ff24412b3b19a4f72bd06c"
     },
     "art/alignment_chaos.png": {
       "bytes": 42154,
@@ -330,12 +330,12 @@
       "sha256": "eb53d84e8aed67930afdc3f25c4f8693e64b09ced1b019fc92097f36bffe5e45"
     },
     "browser-bridge.js": {
-      "bytes": 2817,
-      "sha256": "47b22d294e1448e74cfae55adfc39035465d910b7efec939fa91d09ac3a1a4b1"
+      "bytes": 2859,
+      "sha256": "f43979c5cd3b56a8398958f3112753aec9df50339a6e70807f447f1d0d1aefd5"
     },
     "engine-bundle.json": {
-      "bytes": 1073892,
-      "sha256": "250dd4a318af2d85932fd59293b17842e6cf5d3d4150e62a54dff0b982f38fb8"
+      "bytes": 1075228,
+      "sha256": "4dc1c6a37351c3afc89b8366a14cc0d10e130ff2e15dda43088f5aa4080ea2c1"
     },
     "i18n.js": {
       "bytes": 17646,
@@ -390,12 +390,12 @@
       "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
     },
     "mini.js": {
-      "bytes": 23131,
-      "sha256": "f8998f5393d6c34ef95f6fc25dda4ad93b9b0d0ee9b2cf4b7fda74ff674fe4fc"
+      "bytes": 24943,
+      "sha256": "65d8eb6598b0f0727ecdf893b5ae30e2f70dd6e1d58f89f6b35b8505e9d2e89b"
     },
     "source/bridge.py": {
-      "bytes": 1823,
-      "sha256": "27b22c282a0184fcefeb83bcbdf0a9bb43e394c2576efdda686d0ef070651632"
+      "bytes": 2672,
+      "sha256": "4a84085c567b9160866c995d0f4b1c90c2f6003489f7bbe6e848ad4b7517d088"
     },
     "source/data/card_assets.json": {
       "bytes": 6203,
@@ -478,16 +478,16 @@
       "sha256": "1131ad6c742ec431c04a2dc8f233878c0eae69ad05dc8323fefdec593ca00e82"
     },
     "source/ui/ekona_demo/mini_match.py": {
-      "bytes": 25306,
-      "sha256": "e8a86edea17329c56daf97b8787ff1c7b6417ccf2e1b36d61c75cc24bbbd93e5"
+      "bytes": 25461,
+      "sha256": "84980725e60cbdf753c48b6cf3b20d6ee81b650a672d2d0f1db4835f218bac58"
     },
     "source/ui/ekona_demo/model.py": {
       "bytes": 28872,
       "sha256": "3451a8adc44ed187d879cd8260ff26325124b6a4554399345f69f29703af6974"
     },
     "style.css": {
-      "bytes": 136507,
-      "sha256": "0d19d27a3bc80215db55d11265c3b0ad84ce848cdbdedd36491a98ee10bcf194"
+      "bytes": 138267,
+      "sha256": "46229bc97cfd06c9513f7ae76310fc44c780c745cda1d9d98fca6c2da74332bc"
     },
     "under-the-surface.html": {
       "bytes": 19245,
@@ -520,6 +520,10 @@
     "worker.mjs": {
       "bytes": 1809,
       "sha256": "af7ea8ec62839ce317f3e09a0a1f977fb9fc7636f16dbc9af1f93753dcd0f840"
+    },
+    "art/playerboard-mask.svg": {
+      "bytes": 3332,
+      "sha256": "0eefeacfc6b04f7643a24405334d60a65cb0b99f365d14accba8e1ce672e2a36"
     }
   }
 }

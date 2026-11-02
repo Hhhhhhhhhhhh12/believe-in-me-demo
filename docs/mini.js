@@ -119,6 +119,22 @@ function miniTableauCommands() {
   if (!roles.length && !charges.length && !other.length) return '';
   return `<div class="mini-tableau-tools" aria-label="${t('Tableau-Befehle','Tableau commands')}">${roles.length ? `<div class="mini-temple-actions">${roles.map(option => `<button type="button" class="temple-command" data-action="mini_move" data-move-index="${option.index}">${image(miniRoleArt[option.role],'','')}<span>${escape(miniRoles()[option.role])}</span></button>`).join('')}</div>` : ''}${charges.length ? `<details class="mini-grenade-actions"><summary>${image('grenade','','')}${t('Heilige Handgranate','Holy Hand Grenade')} · ${state.grenade.level}/3</summary>${chargeOnly ? miniCommand(chargeOnly) : ''}${charges.filter(option => option.detonate).map(miniCommand).join('')}</details>` : ''}${other.length ? `<div class="mini-other-actions">${other.map(miniCommand).join('')}</div>` : ''}</div>`;
 }
+function miniSpecialChips() {
+  const m = state.match;
+  const nuns = m.roles.find(role => role.type === 'Nonnen');
+  const assigned = nuns?.assigned || 0;
+  const nunStatus = m.nun_ready ? t(`${m.nun_ready} bereit`,`${m.nun_ready} ready`)
+    : assigned ? t(`${assigned} eingesetzt`,`${assigned} assigned`) : t('Unbesetzt','Empty');
+  return `<div class="tableau-special-chips" role="group" aria-label="${t('Prophet und Kampfnonnen','Prophet and Battle nuns')}">
+    <div class="tableau-chip-slot prophet-slot ${m.prophet ? 'occupied' : ''}" data-occupied="${Boolean(m.prophet)}"><span class="tableau-chip" role="img" aria-label="${t('Prophet','Prophet')}: ${m.prophet ? t('bei dir','with you') : t('nicht bei dir','not with you')}">${m.prophet ? image('prophet','','') : '<span class="chip-empty" aria-hidden="true"></span>'}</span><span class="chip-name">${t('Prophet','Prophet')}</span><small>${m.prophet ? t('Bei dir','With you') : t('Frei','Empty')}</small></div>
+    <div class="tableau-chip-slot nun-slot ${assigned ? 'occupied' : ''}" data-ready="${m.nun_ready}" data-assigned="${assigned}"><span class="tableau-chip" role="img" aria-label="${t('Kampfnonnen','Battle nuns')}: ${nunStatus}">${assigned || m.nun_ready ? image('nun','','') : '<span class="chip-empty" aria-hidden="true"></span>'}</span><span class="chip-name">${t('Kampfnonne','Battle nun')}</span><small>${nunStatus}</small></div>
+  </div>`;
+}
+function miniProphetSupply() {
+  const holder = state.match.prophet_holder;
+  if (holder === 'p1') return '';
+  return `<div class="mini-prophet-supply" role="group" aria-label="${t('Prophet','Prophet')}"><span class="tableau-chip">${image('prophet','','')}</span><span><strong>${t('Prophet','Prophet')}</strong><small>${holder ? escape(miniPlayer(holder)) : t('Im Vorrat','In reserve')}</small></span></div>`;
+}
 function miniBoard() {
   const m = state.match;
   const own = state.players[0];
@@ -129,14 +145,14 @@ function miniBoard() {
   const alignment = miniAlignments()[own.alignment];
   const slots = [['Mönche',[[17.3,31.1],[25.3,31.1],[21.3,22],[29.3,22]]], ['Missionare',[[76.3,29.8],[82,29.8]]]];
   return `<section class="mini-tableau" aria-label="${t('Dein Originaltableau','Your original tableau')}">
-    <div class="mini-flock"><div><h2>${t('Dein Himmelreich','Your realm')}</h2><strong>${own.believers}</strong><span>${t('freie Gläubige','free believers')}</span></div>${m.prophet ? `<span class="mini-prophet">${image('prophet','', '')}${t('Der Prophet ist bei dir','The Prophet is with you')}</span>` : ''}</div>
-    <div class="original-tableau">${image('playerboard','original-board',t('Originales englisches Spielertableau','Original English player board'))}
+    <div class="mini-flock"><div><h2>${t('Dein Himmelreich','Your realm')}</h2><strong>${own.believers}</strong><span>${t('freie Gläubige','free believers')}</span></div></div>
+    <div class="tableau-with-chips"><div class="original-tableau">${image('playerboard','original-board',t('Originales englisches Spielertableau','Original English player board'))}
       ${alignment ? `<span class="board-alignment">${image(alignment[0],'',t(`Gesinnung: ${alignment[1]}`,`Alignment: ${alignment[1]}`))}</span>` : ''}
       ${parts.map(key => `<button type="button" class="board-body board-${key}" data-art="${key}" aria-label="${escape(t(`${cardName(key)} vergrößern`,`Enlarge ${cardName(key)}`))}">${image(key)}</button>`).join('')}
       ${relics.map((key,i) => `<button type="button" class="board-relic relic-${i}" data-art="${key}" aria-label="${escape(t(`${cardName(key)} vergrößern`,`Enlarge ${cardName(key)}`))}">${image(key)}</button>`).join('')}
       ${slots.flatMap(([role,positions]) => positions.slice(0,assigned[role] || 0).map(([x,y]) => `<span class="board-role board-role-${miniRoleArt[role]}" style="left:${x}%;top:${y}%">${image(miniRoleArt[role],'',miniRoles()[role])}</span>`)).join('')}
       <div class="board-grenade" role="img" aria-label="${t('Granate geladen auf Stufe','Grenade charged to level')} ${state.grenade.level}">${Array.from({length:state.grenade.level},()=>image('believer','', '')).join('')}</div>
-    </div>
+    </div>${miniSpecialChips()}</div>
     <div class="visually-hidden mini-tableau-status">${escape(alignment?.[1] || '')}. ${t('Tempel','Temples')} ${own.bound}/${m.roles.reduce((sum,role)=>sum + role.capacity,0)}. ${m.roles.map(role=>`${miniRoles()[role.type]} ${role.assigned}/${role.capacity}`).join(' · ')}</div>
     <div class="mini-free-flock">${tokens(own.believers,'',previousBelievers.p1 ?? own.believers)}</div>
     ${enlighteners.length ? `<div class="mini-enlighteners"><h3>${t('Aufklärer an deinem Tableau','Enlighteners on your tableau')}</h3>${enlighteners.map(key=>card(key)).join('')}</div>` : ''}${m.stored.length ? `<div class="mini-stored"><h3>${t('Gespeicherte Mächte','Stored powers')}</h3>${m.stored.map(key=>card(key,'landscape')).join('')}</div>` : ''}${miniTableauCommands()}
@@ -183,7 +199,7 @@ function miniScene(motion, arriving = false) {
   return `<section class="mini-match ${arriving ? 'mini-arriving' : ''}">
     <header class="mini-heading"><div class="mini-realm-title"><h1 id="stage-title" tabindex="-1"><span class="mini-name-halo" aria-hidden="true"></span>Walter</h1></div><div class="mini-round-status"><span>${t('Runde','Round')} ${state.round} · ${state.body_count}/3 ${t('Körperteile','body parts')}</span>${state.endgame ? `<span>${t(`Götterdämmerung: ${m.rounds_left ?? 3} Schlussrunden`,`Twilight: ${m.rounds_left ?? 3} final rounds`)}</span>` : ''}</div></header>
     <div class="mini-play-area ${contest ? 'mini-contesting' : ''}">${miniBoard()}
-      <div class="mini-center"><h2 class="mini-table-title">${t('Am Spieltisch','At the table')}</h2>
+      <div class="mini-center"><div class="mini-center-heading"><h2 class="mini-table-title">${t('Am Spieltisch','At the table')}</h2>${miniProphetSupply()}</div>
         ${contest && m.prize ? miniContest(motion) : miniPhenomenonExamples()}
         ${contest ? '' : miniOpponents(motion)}${miniSelectedPreview()}
       </div>

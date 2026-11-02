@@ -381,6 +381,8 @@ class MiniMatch:
             "nun_active": own.nunnery_state.active, "nun_ready": own.nunnery_state.prepared_nuns,
             "stored": [self.art_by_id(card_id) for card_id in own.stored_phenomena],
             "prophet": own.prophet_owner,
+            "prophet_holder": next((pid for pid, player in self.state.players.items()
+                                    if player.prophet_owner), None),
             "players": [{"id": pid, "believers": player.meeples, "bound": sum(player.assigned_role_meeples.values()),
                          "alignment": player.alignment,
                          "complete": core.has_complete_trinity(player), "hand_count": len(player.hand_cards),
