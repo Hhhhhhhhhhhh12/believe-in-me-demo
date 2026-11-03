@@ -122,7 +122,7 @@ class BrowserDemoSmokeTest(unittest.TestCase):
                 manifest = 'true' if match['can_manifest'] else 'false'
                 selector = f'[data-action="mini_claim"][data-manifest="{manifest}"]'
             elif phase == 'nun':
-                selector = '[data-action="mini_nun"][data-sacrifice="false"]'
+                selector = '[data-action="mini_nun"][data-sacrifice="true"]'
             elif match['actor'] in {'p2', 'p3'}:
                 selector = '[data-action="mini_advance"]'
             elif phase == 'turn':
@@ -147,6 +147,16 @@ class BrowserDemoSmokeTest(unittest.TestCase):
                 self.assertTrue(state['revealed'])
                 self.assertEqual(state['match']['rounds_left'], 3)
                 expect(page.locator('.board-legs')).to_be_visible()
+                expect(page.locator('.prophet-slot')).to_have_attribute('data-occupied', 'true')
+                expect(page.locator('.prophet-slot img')).to_be_visible()
+                expect(page.locator('.mini-prophet-supply')).to_have_count(0)
+                directory = ARTIFACTS / 'layout'
+                directory.mkdir(parents=True, exist_ok=True)
+                page.screenshot(path=str(directory / 'special-chips-prophet-claimed.png'), full_page=True)
+            if phase == 'nun' and before['round'] == 1:
+                self.assertEqual(state['match']['nun_ready'], 0)
+                expect(page.locator('.nun-slot')).to_have_attribute('data-ready', '0')
+                expect(page.locator('.nun-slot img')).to_have_count(0)
             if state['endgame']:
                 expect(page.locator('.mini-round-status')).to_contain_text(
                     f'Twilight: {state["match"]["rounds_left"]} final rounds'
@@ -203,6 +213,13 @@ class BrowserDemoSmokeTest(unittest.TestCase):
                 self.assertEqual({p['id'] for p in before['players']}, {'p1', 'p2', 'p3'})
                 self.assertEqual(before['players'][0]['believers'], 6)
                 self.assertGreater(len(before['match']['hand']), 0)
+                self.assertEqual(before['match']['nun_ready'], 1)
+                self.assertTrue(before['match']['nun_active'])
+                self.assertIsNone(before['match']['prophet_holder'])
+                expect(page.locator('.nun-slot')).to_have_attribute('data-ready', '1')
+                expect(page.locator('.nun-slot img')).to_be_visible()
+                expect(page.locator('.prophet-slot')).to_have_attribute('data-occupied', 'false')
+                expect(page.locator('.mini-prophet-supply')).to_contain_text('In reserve')
                 self.assert_rendered(page, before)
                 expect(page.locator('[data-action="mini_end_turn"]')).to_have_text('End turn & draw')
 
